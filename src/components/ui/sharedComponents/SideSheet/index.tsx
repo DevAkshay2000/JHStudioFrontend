@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "../../switch";
 
+//Form Fields schema
 type FieldSchema = {
   label: string;
   name: string;
@@ -27,45 +28,22 @@ type FieldSchema = {
   validations: { min?: number; max?: number; message?: string }[];
 };
 
+//JSON file schema
 type SampleSchema = {
   menuId: number;
-  postUrl: string;
-  fields: FieldSchema[];
-};
-
-interface SideSheetProps {
   buttonName?: string;
   sheetTitle?: string;
   sheetDescription?: string;
+  fields: FieldSchema[];
+};
+interface SideSheetProps {
   formGenSchema: SampleSchema;
+  onSubmit: () => void;
 }
 
-export function SideSheet({
-  buttonName,
-  sheetTitle,
-  sheetDescription,
-  formGenSchema,
-}: SideSheetProps): JSX.Element {
-  // Create Zod validation schema based on field validations
-  // const validationSchema = z.object(
-  //   formGenSchema.fields.reduce((acc: any, field: any) => {
-  //     let validator = z.string();
-  //     if (field.required) {
-  //       validator = validator.min(1, field.error);
-  //     }
-  //     field.validations.forEach((rule: any) => {
-  //       if (rule.min !== undefined) {
-  //         validator = validator.min(rule.min, rule.message);
-  //       }
-  //       if (rule.max !== undefined) {
-  //         validator = validator.max(rule.max, rule.message);
-  //       }
-  //     });
-  //     acc[field.name] = validator;
-  //     return acc;
-  //   }, {} as Record<string, z.ZodType<any>>)
-  // );
-  // Create Zod validation schema based on field validations
+export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Element {
+
+  //Zod validation schema based on field validations
   const validationSchema = z.object(
     formGenSchema.fields.reduce((acc, field) => {
       let validator: any;
@@ -79,15 +57,15 @@ export function SideSheet({
         }
       } else {
         validator = z.string();
-        if (field.required) {
-          validator = validator.min(1, field.error);
+        if (field?.required) {
+          validator = validator?.min(1, field.error);
         }
         field.validations.forEach((rule) => {
           if (rule.min !== undefined) {
-            validator = validator.min(rule.min, rule.message);
+            validator = validator?.min(rule.min, rule.message);
           }
           if (rule.max !== undefined) {
-            validator = validator.max(rule.max, rule.message);
+            validator = validator?.max(rule.max, rule.message);
           }
         });
       }
@@ -105,21 +83,18 @@ export function SideSheet({
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
-  };
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline">
-          <FaPlus /> Add New {buttonName}
+          <FaPlus /> Add New {formGenSchema?.buttonName}
         </Button>
       </SheetTrigger>
       <SheetContent style={{ maxWidth: "40vw" }}>
         <SheetHeader>
-          <SheetTitle>{sheetTitle}</SheetTitle>
-          <SheetDescription>{sheetDescription}</SheetDescription>
+          <SheetTitle>{formGenSchema?.sheetTitle}</SheetTitle>
+          <SheetDescription>{formGenSchema?.sheetDescription}</SheetDescription>
         </SheetHeader>
         <div className="grid grid-cols-2 gap-4">
           <form
@@ -129,11 +104,11 @@ export function SideSheet({
             {formGenSchema.fields.map((field) => (
               <div
                 className="grid grid-rows-1 gap-2"
-                key={field.name}
+                key={field?.name}
                 style={{ marginBottom: "1rem" }}
               >
                 {field.type !== "checkbox" ? (
-                  <Label htmlFor={field.name} className="text-left">
+                  <Label htmlFor={field?.name} className="text-left">
                     {field.label}
                   </Label>
                 ) : null}
@@ -141,15 +116,7 @@ export function SideSheet({
                 <Controller
                   name={field.name}
                   control={control}
-                  // defaultValue=""
-                  // render={({ field: controllerField }) => (
-                  //   <Input
-                  //     className="col-span-3"
-                  //     {...controllerField}
-                  //     type={field.type}
-                  //   />
-                  // )}
-                  defaultValue={field.type === "checkbox" ? false : ""}
+                  defaultValue={field?.type === "checkbox" ? false : ""}
                   render={({ field: controllerField }) => {
                     if (field.type === "select" && "options" in field) {
                       return (
@@ -158,11 +125,11 @@ export function SideSheet({
                           className="col-span-3 p-2 border border-gray-300 rounded"
                         >
                           <option value="">-- Select an option --</option>
-                          {Array.isArray(field.options) &&
-                            field.options.map(
+                          {Array.isArray(field?.options) &&
+                            field?.options?.map(
                               (option: { label: string; value: string }) => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
+                                <option key={option?.value} value={option?.value}>
+                                  {option?.label}
                                 </option>
                               )
                             )}
@@ -175,7 +142,7 @@ export function SideSheet({
                             {field.label}
                           </Label>
                           <Switch
-                            checked={!!controllerField.value}
+                            checked={!!controllerField?.value}
                             onCheckedChange={(checked) =>
                               controllerField.onChange(checked)
                             }

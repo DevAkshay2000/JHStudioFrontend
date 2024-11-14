@@ -1,21 +1,24 @@
 {
     "menuId": 14,
     "postUrl": "/sample",
+    "buttonName": "Customer",
+    "sheetTitle": "Add New Customer",
+    "sheetDescription": "",
     "fields": [
         {
             "label": "Name",
             "name": "name",
             "type": "text",
             "required": true,
-            "error": "this field is required",
+            "error": "Name field is required",
             "validations": [
                 {
-                  "min": 10,
-                  "message": "min 10 characters"
+                  "min": 3,
+                  "message": "Should have min 3 characters"
                 },
                 {
                   "max": 100,
-                  "message": "max 100 characters"
+                  "message": "Should not have more than 100 characters"
                 }
             ]
         },
