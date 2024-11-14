@@ -1,0 +1,61 @@
+{
+    "menuId": 14,
+    "postUrl": "/sample",
+    "fields": [
+        {
+            "label": "Name",
+            "name": "name",
+            "type": "text",
+            "required": true,
+            "error": "this field is required",
+            "validations": [
+                {
+                  "min": 10,
+                  "message": "min 10 characters"
+                },
+                {
+                  "max": 100,
+                  "message": "max 100 characters"
+                }
+            ]
+        },
+        {
+          "label": "Mobile Number",
+          "name": "mobile",
+          "type": "number",
+          "required": true,
+          "error": "Mobile number is required",
+          "validations": [
+              {
+                "min": 10,
+                "message": "min 10 digits"
+              },
+              {
+                "max": 100,
+                "message": "max 12 digits"
+              }
+          ]
+        },
+        {
+          "label": "Subscribe to Newsletter",
+          "name": "subscribe",
+          "type": "checkbox",
+          "required": false,
+          "error": "",
+          "validations": []
+        },
+        {
+          "label": "Select Category",
+          "name": "category",
+          "type": "select",
+          "required": true,
+          "error": "Please select a category",
+          "options": [
+            { "label": "Computer Technology", "value": "technology" },
+            { "label": "Health", "value": "health" },
+            { "label": "Finance", "value": "finance" }
+          ],
+          "validations": []
+        }
+    ]
+}
