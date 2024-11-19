@@ -156,7 +156,6 @@ const useCustomerTable = () => {
   ];
 
   //API for table data
-
   const fetchTableData = async () => {
     try {
       setLoading(true);
@@ -191,6 +190,7 @@ const useCustomerTable = () => {
     setSelectedDeleteId(id);
   };
 
+  // Function to delete the record
   const handleAgreeDelete = async () => {
     if (selectedDeleteId) {
       try {
@@ -201,11 +201,12 @@ const useCustomerTable = () => {
         }, 2000);
       } catch (err: any) {
         if (err) {
-          toast.error("Failed to delete record");
+          toast.error("Failed to delete record!");
         }
       }
     }
   };
+
   return {
     columns,
     data: tableData,

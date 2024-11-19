@@ -54,14 +54,14 @@
         "required": false,
         "error": "",
         "validations": []
-    },
+      },
       {
-        "label": "Select City",
-        "name": "city",
+        "label": "Select Country",
+        "name": "country",
         "type": "select",
+        "optionsAPI": "/countries",
         "required": true,
-        "optionsAPI": "/cities",
-        "error": "Please select a city",
+        "error": "Please select a country",
         "validations": []
       },
       {
@@ -74,12 +74,12 @@
         "validations": []
       },
       {
-        "label": "Select Country",
-        "name": "country",
+        "label": "Select City",
+        "name": "city",
         "type": "select",
-        "optionsAPI": "/countries",
         "required": true,
-        "error": "Please select a country",
+        "optionsAPI": "/cities",
+        "error": "Please select a city",
         "validations": []
       },
       {
