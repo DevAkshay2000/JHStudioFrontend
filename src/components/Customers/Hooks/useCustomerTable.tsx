@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,18 +12,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import getData from "@/api/getData.api";
+import { useEffect, useState } from "react";
+import deleteDataAPI from "@/api/deleteData.api";
+import toast from "react-hot-toast";
 
 // Type defination for columns header
-export type Payment = {
+export type ColumnHeaderType = {
   id: string;
-  amount: number;
   status: "pending" | "processing" | "success" | "failed";
   email: string;
   name?: string;
   mobile?: string;
-  address?: string;
-  artist?: string;
-  services?: string;
+  sortBy?: string;
 };
 
 //interface for Column Data
@@ -30,14 +32,33 @@ interface CustomerData {
   id: string;
   name: string;
   mobile: number;
-  address: string;
-  artist: string;
-  services: string;
+  birthDate: string;
+  email: string;
+  isInactive: number;
+  createdDate: string;
+  modifiedDate: string;
 }
 
 const useCustomerTable = () => {
+  const [tableData, setTableData] = useState<CustomerData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
   //Column defination
-  const columns: ColumnDef<Payment>[] = [
+  const columns: ColumnDef<ColumnHeaderType>[] = [
+    {
+      accessorKey: "code",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Code
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
     {
       accessorKey: "name",
       header: ({ column }) => (
@@ -46,6 +67,18 @@ const useCustomerTable = () => {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Customer Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "birthdateUpdated",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Of Birth
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -63,37 +96,25 @@ const useCustomerTable = () => {
       ),
     },
     {
-      accessorKey: "address",
+      accessorKey: "email",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Address
+          Email ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "artist",
+      accessorKey: "isInactiveUpdated",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Artist Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "services",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Services
+          Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -101,7 +122,7 @@ const useCustomerTable = () => {
     {
       id: "actions",
       cell: ({ row }) => {
-        const payment = row.original;
+        const records = row.original;
 
         return (
           <DropdownMenu>
@@ -115,11 +136,18 @@ const useCustomerTable = () => {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() => navigator.clipboard.writeText(records.id)}
               >
-                View Record
+                Edit Record
               </DropdownMenuItem>
-              <DropdownMenuItem>Delete Record</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  onClick={() => handleDeleteClick(Number(records.id))}
+                  style={{ background: "none", color: "red", border: "none" }}
+                >
+                  Delete Record
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -127,43 +155,66 @@ const useCustomerTable = () => {
     },
   ];
 
-  // Column data
-  const data: CustomerData[] = [
-    {
-      id: "728ed52f",
-      name: "Tanner Linsley",
-      mobile: 9874563215,
-      address: "London",
-      artist: "John Doe",
-      services: "Haircut",
-    },
-    {
-      id: "728ed52f",
-      name: "BTanner Linsley",
-      mobile: 9874563215,
-      address: "London",
-      artist: "John Doe",
-      services: "Haircut",
-    },
-    {
-      id: "728ed52f",
-      name: "ATanner Linsley",
-      mobile: 9874563215,
-      address: "London",
-      artist: "John Doe",
-      services: "Haircut",
-    },
-    {
-      id: "728ed52f",
-      name: "ZTanner Linsley",
-      mobile: 9874563215,
-      address: "London",
-      artist: "John Doe",
-      services: "Haircut",
-    },
-  ];
+  //API for table data
 
-  return { columns, data, dynamicFormSchema };
+  const fetchTableData = async () => {
+    try {
+      setLoading(true);
+      let response: any = await getData(dynamicFormSchema.postUrl);
+      response = response?.data?.map((item: any) => {
+        const originalDate = new Date(item.birthDate);
+        const day = String(originalDate.getUTCDate()).padStart(2, "0");
+        const month = String(originalDate.getUTCMonth() + 1).padStart(2, "0");
+        const year = originalDate.getUTCFullYear();
+
+        //Birthdate in DD/MM/YYYY format
+        item.birthdateUpdated = `${day}/${month}/${year}`;
+        //Status in Active/Not Active
+        item.isInactiveUpdated =
+          item.isInactive === 1 ? "Active" : "Not Active";
+        return item;
+      });
+      setTableData(response);
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTableData();
+  }, []);
+
+  const handleDeleteClick = (id: number) => {
+    setShowAlert(true);
+    setSelectedDeleteId(id);
+  };
+
+  const handleAgreeDelete = async () => {
+    if (selectedDeleteId) {
+      try {
+        await deleteDataAPI(dynamicFormSchema.postUrl, selectedDeleteId);
+        toast.success("Record deleted successfully");
+        setTimeout(() => {
+          fetchTableData(); // Calling function after successfully deleting record for updated table data
+        }, 2000);
+      } catch (err: any) {
+        if (err) {
+          toast.error("Failed to delete record");
+        }
+      }
+    }
+  };
+  return {
+    columns,
+    data: tableData,
+    dynamicFormSchema,
+    loading,
+    showAlert,
+    setShowAlert,
+    handleAgreeDelete,
+  };
 };
 
 export default useCustomerTable;

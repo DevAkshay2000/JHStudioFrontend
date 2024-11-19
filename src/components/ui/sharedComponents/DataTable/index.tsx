@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -29,12 +30,14 @@ import React from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  // sortableColumns: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: // sortableColumns,
+DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -65,10 +68,18 @@ export function DataTable<TData, TValue>({
         <Input
           placeholder="Search Records"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onChange={(event: any) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
+          // onChange={(event: any) => {
+          //   sortableColumns?.forEach((column: any) => {
+          //     if (column.sortBy) {
+          //       table
+          //         .getColumn(column.sortBy)
+          //         ?.setFilterValue(event.target.value);
+          //     }
+          //   });
+          // }}
           className="max-w-sm"
         />
         <p className="text-sm font-normal uppercase hidden sm:block">

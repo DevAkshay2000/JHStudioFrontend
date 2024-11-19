@@ -1,28 +1,28 @@
 {
-    "menuId": 14,
-    "postUrl": "/sample",
-    "buttonName": "Customer",
-    "sheetTitle": "Add New Customer",
-    "sheetDescription": "",
-    "fields": [
-        {
-            "label": "Name",
-            "name": "name",
-            "type": "text",
-            "required": true,
-            "error": "Name field is required",
-            "validations": [
-                {
+  "menuId": 14,
+  "postUrl": "/customers",
+  "buttonName": "Customer",
+  "sheetTitle": "Add New Customer",
+  "sheetDescription": "",
+  "fields": [
+      {
+          "label": "Name",
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "error": "Name field is required",
+          "validations": [
+              {
                   "min": 3,
                   "message": "Should have min 3 characters"
-                },
-                {
+              },
+              {
                   "max": 100,
                   "message": "Should not have more than 100 characters"
-                }
-            ]
-        },
-        {
+              }
+          ]
+      },
+      {
           "label": "Mobile Number",
           "name": "mobile",
           "type": "number",
@@ -30,35 +30,66 @@
           "error": "Mobile number is required",
           "validations": [
               {
-                "min": 10,
-                "message": "min 10 digits"
+                  "min": 10,
+                  "message": "Should have min 10 digits"
               },
               {
-                "max": 100,
-                "message": "max 12 digits"
+                  "max": 12,
+                  "message": "Should have max 12 digits"
               }
           ]
-        },
-        {
-          "label": "Subscribe to Newsletter",
-          "name": "subscribe",
-          "type": "checkbox",
-          "required": false,
-          "error": "",
-          "validations": []
-        },
-        {
-          "label": "Select Category",
-          "name": "category",
-          "type": "select",
+      },
+      {
+          "label": "Date of Birth",
+          "name": "birthDate",
+          "type": "date",
           "required": true,
-          "error": "Please select a category",
-          "options": [
-            { "label": "Computer Technology", "value": "technology" },
-            { "label": "Health", "value": "health" },
-            { "label": "Finance", "value": "finance" }
-          ],
+          "error": "Date of birth is required",
           "validations": []
-        }
-    ]
+      },
+      {
+        "label": "Email Id",
+        "name": "email",
+        "type": "email",
+        "required": false,
+        "error": "",
+        "validations": []
+    },
+      {
+        "label": "Select City",
+        "name": "city",
+        "type": "select",
+        "required": true,
+        "optionsAPI": "/cities",
+        "error": "Please select a city",
+        "validations": []
+      },
+      {
+        "label": "Select State",
+        "name": "state",
+        "type": "select",
+        "optionsAPI": "/states",
+        "required": true,
+        "error": "Please select a state",
+        "validations": []
+      },
+      {
+        "label": "Select Country",
+        "name": "country",
+        "type": "select",
+        "optionsAPI": "/countries",
+        "required": true,
+        "error": "Please select a country",
+        "validations": []
+      },
+      {
+        "label": "Status",
+        "name": "isInactive",
+        "type": "checkbox",
+        "required": false,
+        "defaultValue": true,
+        "error": "",
+        "validations": []
+      }
+  ]
 }

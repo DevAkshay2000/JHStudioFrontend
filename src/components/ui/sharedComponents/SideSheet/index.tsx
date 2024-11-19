@@ -17,8 +17,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Switch } from "../../switch";
+import { useEffect, useState } from "react";
+import getData from "@/api/getData.api";
 
-//Form Fields schema
+// Form Fields schema
 type FieldSchema = {
   label: string;
   name: string;
@@ -26,9 +28,10 @@ type FieldSchema = {
   required: boolean;
   error: string;
   validations: { min?: number; max?: number; message?: string }[];
+  defaultValue?: boolean;
 };
 
-//JSON file schema
+// JSON file schema
 type SampleSchema = {
   menuId: number;
   buttonName?: string;
@@ -39,11 +42,15 @@ type SampleSchema = {
 interface SideSheetProps {
   formGenSchema: SampleSchema;
   onSubmit: () => void;
+  buttonLoader: boolean;
 }
 
-export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Element {
-
-  //Zod validation schema based on field validations
+export function SideSheet({
+  formGenSchema,
+  onSubmit,
+  buttonLoader,
+}: SideSheetProps): JSX.Element {
+  // Zod validation schema based on field validations
   const validationSchema = z.object(
     formGenSchema.fields.reduce((acc, field) => {
       let validator: any;
@@ -83,6 +90,39 @@ export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Elem
     resolver: zodResolver(validationSchema),
   });
 
+  // Options for dropdown field
+  const [dropdownOptions, setDropdownOptions] = useState<Record<string, any[]>>(
+    {}
+  );
+  useEffect(() => {
+    // Function to fetch dropdown options from the API
+    const fetchOptions = async (fieldName: string, apiUrl: string) => {
+      const apiFilter = {
+        fields: {
+          id: true,
+          name: true,
+          stateId: true,
+        },
+      };
+      try {
+        const response = await getData(apiUrl, apiFilter);
+        setDropdownOptions((prev: any) => ({
+          ...prev,
+          [fieldName]: response.data,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch options:", error);
+      }
+    };
+
+    // Loop through form fields to load options as needed
+    formGenSchema.fields.forEach((field: any) => {
+      if (field.type === "select" && !field.options) {
+        // Pass the field's name and API endpoint to fetchOptions
+        fetchOptions(field.name, field.optionsAPI);
+      }
+    });
+  }, [formGenSchema.fields]);
 
   return (
     <Sheet>
@@ -116,23 +156,22 @@ export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Elem
                 <Controller
                   name={field.name}
                   control={control}
-                  defaultValue={field?.type === "checkbox" ? false : ""}
+                  defaultValue={
+                    field.type === "checkbox" ? field.defaultValue || false : ""
+                  }
                   render={({ field: controllerField }) => {
-                    if (field.type === "select" && "options" in field) {
+                    if (field.type === "select") {
                       return (
                         <select
                           {...controllerField}
-                          className="col-span-3 p-2 border border-gray-300 rounded"
+                          className="p-2 border border-gray-300 rounded w-full"
                         >
                           <option value="">-- Select an option --</option>
-                          {Array.isArray(field?.options) &&
-                            field?.options?.map(
-                              (option: { label: string; value: string }) => (
-                                <option key={option?.value} value={option?.value}>
-                                  {option?.label}
-                                </option>
-                              )
-                            )}
+                          {(dropdownOptions[field.name] || []).map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
                         </select>
                       );
                     } else if (field.type === "checkbox") {
@@ -149,6 +188,8 @@ export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Elem
                           />
                         </div>
                       );
+                    } else if (field.type === "date") {
+                      return <Input type="date" {...controllerField} />;
                     } else {
                       return (
                         <Input
@@ -169,7 +210,7 @@ export function SideSheet({ formGenSchema, onSubmit }: SideSheetProps): JSX.Elem
             ))}
             <div className="grid col-span-2 w-full">
               <Button type="submit" disabled={isSubmitting} className="w-full">
-                {isSubmitting ? "Submitting..." : "Submit"}
+                {buttonLoader ? "Submitting.." : "Submit"}
               </Button>
             </div>
           </form>
