@@ -4,8 +4,11 @@ import dynamicFormSchema from "../formSchema.json";
 import { useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
+import { useFetchDataContext } from "../../context/fetchTableDataContext";
 
 const useAddEditCustomers = () => {
+  //Importing global state from context
+  const { isRefresh, setIsRefresh } = useFetchDataContext();
   // state for button loadewr
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
 
@@ -18,6 +21,7 @@ const useAddEditCustomers = () => {
       const response = await postData(dynamicFormSchema.postUrl, payload);
       if (response) {
         setButtonLoader(false);
+        setIsRefresh(!isRefresh);
         toast.success("Record added successfully..!");
       }
     } catch (err: any) {

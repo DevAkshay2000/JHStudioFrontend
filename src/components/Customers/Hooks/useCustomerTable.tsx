@@ -16,6 +16,10 @@ import getData from "@/api/getData.api";
 import { useEffect, useState } from "react";
 import deleteDataAPI from "@/api/deleteData.api";
 import toast from "react-hot-toast";
+import { useFetchDataContext } from "../../context/fetchTableDataContext";
+import getDataById from "@/api/getDataById.api";
+import updateData from "@/api/updateData.api";
+import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 
 // Type defination for columns header
 export type ColumnHeaderType = {
@@ -44,6 +48,11 @@ const useCustomerTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const { isRefresh, setIsRefresh, selectedRecordId, setSelectedRecordId } =
+    useFetchDataContext();
+  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  const [dataEditModeData, setEditModaData] = useState([]);
+  const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
 
   //Column defination
   const columns: ColumnDef<ColumnHeaderType>[] = [
@@ -135,15 +144,28 @@ const useCustomerTable = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(records.id)}
-              >
-                Edit Record
+              <DropdownMenuItem>
+                <Button
+                  onClick={() => handleEditClick(Number(records.id))}
+                  style={{
+                    background: "none",
+                    color: "red",
+                    border: "none",
+                    width: "100%",
+                  }}
+                >
+                  Edit Record
+                </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
                   onClick={() => handleDeleteClick(Number(records.id))}
-                  style={{ background: "none", color: "red", border: "none" }}
+                  style={{
+                    background: "none",
+                    color: "red",
+                    border: "none",
+                    width: "100%",
+                  }}
                 >
                   Delete Record
                 </Button>
@@ -183,7 +205,7 @@ const useCustomerTable = () => {
 
   useEffect(() => {
     fetchTableData();
-  }, []);
+  }, [isRefresh]);
 
   const handleDeleteClick = (id: number) => {
     setShowAlert(true);
@@ -198,12 +220,64 @@ const useCustomerTable = () => {
         toast.success("Record deleted successfully");
         setTimeout(() => {
           fetchTableData(); // Calling function after successfully deleting record for updated table data
-        }, 2000);
+        }, 1000);
       } catch (err: any) {
         if (err) {
           toast.error("Failed to delete record!");
         }
       }
+    }
+  };
+
+  const handleEditClick = (recordId: number) => {
+    if (recordId) {
+      setSelectedRecordId(recordId);
+      let response: any;
+      const fetchEdiData = async () => {
+        const apiFilter = {
+          relations: [
+            {
+              name: "city",
+            },
+            {
+              name: "state",
+            },
+            {
+              name: "country",
+            },
+          ],
+        };
+        response = await getDataById(
+          dynamicFormSchema.postUrl,
+          recordId,
+          apiFilter
+        );
+        setEditModaData(response.data);
+      };
+      fetchEdiData();
+      setSheetOpen(!sheetOpen);
+    }
+  };
+
+  const handleEditSubmit = async (data: any) => {
+    // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
+    const payload = PayloadModify(dynamicFormSchema, data);
+    try {
+      setEditButtonLoader(true);
+      const response = await updateData(
+        dynamicFormSchema.postUrl,
+        payload,
+        selectedRecordId
+      );
+      if (response) {
+        toast.success("Record updated successfully..!");
+        setEditButtonLoader(false);
+        setIsRefresh(!isRefresh);
+      }
+    } catch (err: any) {
+      setEditButtonLoader(false);
+      toast.error("Error while updating record..!");
+      console.log(err);
     }
   };
 
@@ -215,6 +289,11 @@ const useCustomerTable = () => {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
+    sheetOpen,
+    setSheetOpen,
+    dataEditModeData,
+    handleEditSubmit,
+    editButtonLoader,
   };
 };
 
