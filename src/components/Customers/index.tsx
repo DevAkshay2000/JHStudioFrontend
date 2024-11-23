@@ -29,8 +29,6 @@ function CustomersTable(): JSX.Element {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
-    sheetOpen,
-    setSheetOpen,
     dataEditModeData,
     handleEditSubmit,
     editButtonLoader,
@@ -54,8 +52,6 @@ function CustomersTable(): JSX.Element {
               onSubmit={handleCustomerAddSubmit}
               buttonLoader={buttonLoader}
               editButtonLoader={editButtonLoader}
-              sheetOpen={sheetOpen}
-              setSheetOpen={setSheetOpen}
               editModeData={dataEditModeData as any}
               onEditSubmit={handleEditSubmit as any}
             />

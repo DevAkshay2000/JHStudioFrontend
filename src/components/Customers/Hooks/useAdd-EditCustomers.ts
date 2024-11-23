@@ -8,7 +8,8 @@ import { useFetchDataContext } from "../../context/fetchTableDataContext";
 
 const useAddEditCustomers = () => {
   //Importing global state from context
-  const { isRefresh, setIsRefresh } = useFetchDataContext();
+  const { isRefresh, setIsRefresh, sheetOpen, setSheetOpen } =
+    useFetchDataContext();
   // state for button loadewr
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
 
@@ -22,6 +23,7 @@ const useAddEditCustomers = () => {
       if (response) {
         setButtonLoader(false);
         setIsRefresh(!isRefresh);
+        setSheetOpen(!sheetOpen);
         toast.success("Record added successfully..!");
       }
     } catch (err: any) {

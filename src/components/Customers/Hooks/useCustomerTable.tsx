@@ -48,9 +48,14 @@ const useCustomerTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const { isRefresh, setIsRefresh, selectedRecordId, setSelectedRecordId } =
-    useFetchDataContext();
-  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  const {
+    isRefresh,
+    setIsRefresh,
+    selectedRecordId,
+    setSelectedRecordId,
+    sheetOpen,
+    setSheetOpen,
+  } = useFetchDataContext();
   const [dataEditModeData, setEditModaData] = useState([]);
   const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
 
@@ -270,9 +275,10 @@ const useCustomerTable = () => {
         selectedRecordId
       );
       if (response) {
-        toast.success("Record updated successfully..!");
+        setSheetOpen(!sheetOpen);
         setEditButtonLoader(false);
         setIsRefresh(!isRefresh);
+        toast.success("Record updated successfully..!");
       }
     } catch (err: any) {
       setEditButtonLoader(false);
@@ -289,8 +295,6 @@ const useCustomerTable = () => {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
-    sheetOpen,
-    setSheetOpen,
     dataEditModeData,
     handleEditSubmit,
     editButtonLoader,

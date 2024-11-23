@@ -55,8 +55,6 @@ interface SideSheetProps {
   onEditSubmit: () => void;
   buttonLoader: boolean;
   editButtonLoader: boolean;
-  sheetOpen: boolean;
-  setSheetOpen: any;
   editModeData: EditData;
 }
 
@@ -66,11 +64,9 @@ export function SideSheet({
   onEditSubmit,
   buttonLoader,
   editButtonLoader,
-  sheetOpen,
-  setSheetOpen,
   editModeData,
 }: SideSheetProps): JSX.Element {
-  const { selectedRecordId } = useFetchDataContext();
+  const { selectedRecordId, sheetOpen, setSheetOpen } = useFetchDataContext();
 
   // Zod validation schema based on field validations
   const validationSchema = z.object(

@@ -6,6 +6,8 @@ const FetchDataContext = createContext<any>(null);
 const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
+  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+
   return (
     <FetchDataContext.Provider
       value={{
@@ -13,6 +15,8 @@ const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
         setIsRefresh,
         selectedRecordId,
         setSelectedRecordId,
+        sheetOpen,
+        setSheetOpen,
       }}
     >
       {children}
