@@ -19,6 +19,7 @@ import {
 import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
 import getData from "@/api/getData.api";
+import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
 
 // Form Fields schema
 type FieldSchema = {
@@ -39,19 +40,36 @@ type SampleSchema = {
   sheetDescription?: string;
   fields: FieldSchema[];
 };
+//Interface for edit mode data
+interface EditData {
+  id: string;
+  name: string;
+  mobile: number;
+  birthDate: string;
+  email: string;
+  isInactive: number;
+}
 interface SideSheetProps {
   formGenSchema: SampleSchema;
   onSubmit: () => void;
+  onEditSubmit: () => void;
   buttonLoader: boolean;
   maxWidth?: number;
+  editButtonLoader: boolean;
+  editModeData: EditData;
 }
 
 export function SideSheet({
   formGenSchema,
   onSubmit,
+  onEditSubmit,
   buttonLoader,
   maxWidth,
+  editButtonLoader,
+  editModeData,
 }: SideSheetProps): JSX.Element {
+  const { selectedRecordId, sheetOpen, setSheetOpen } = useFetchDataContext();
+
   // Zod validation schema based on field validations
   const validationSchema = z.object(
     formGenSchema.fields.reduce((acc, field) => {
@@ -88,9 +106,29 @@ export function SideSheet({
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setValue,
   } = useForm({
     resolver: zodResolver(validationSchema),
   });
+
+  //Sewtting up value in edit to each field
+  useEffect(() => {
+    const nameTypeMapping: any = {};
+    formGenSchema?.fields?.forEach((element: any) => {
+      nameTypeMapping[element.name] = element.type;
+    });
+    if (selectedRecordId) {
+      Object.entries(editModeData).forEach(([key, value]) => {
+        if (nameTypeMapping[key] === "select") {
+          setValue(key, `${value.id}`);
+        } else if (nameTypeMapping[key] === "checkbox") {
+          setValue(key, Boolean(value));
+        } else {
+          setValue(key, `${value}`);
+        }
+      });
+    }
+  }, [selectedRecordId, editModeData, setValue, formGenSchema?.fields]);
 
   // Options for dropdown field
   const [dropdownOptions, setDropdownOptions] = useState<Record<string, any[]>>(
@@ -127,7 +165,7 @@ export function SideSheet({
   }, [formGenSchema.fields]);
 
   return (
-    <Sheet>
+    <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
         <Button variant="outline">
           <FaPlus /> Add New {formGenSchema?.buttonName}
@@ -140,7 +178,11 @@ export function SideSheet({
         </SheetHeader>
         <div className="grid grid-cols-2 gap-4">
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={
+              selectedRecordId
+                ? handleSubmit(onEditSubmit)
+                : handleSubmit(onSubmit)
+            }
             className="col-span-2 grid grid-cols-2 gap-4 mt-5"
           >
             {formGenSchema.fields.map((field) => (
@@ -210,11 +252,27 @@ export function SideSheet({
                 )}
               </div>
             ))}
-            <div className="grid col-span-2 w-full">
-              <Button type="submit" disabled={isSubmitting} className="w-full">
-                {buttonLoader ? "Submitting.." : "Submit"}
-              </Button>
-            </div>
+            {selectedRecordId ? (
+              <div className="grid col-span-2 w-full">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {editButtonLoader ? "Updating..." : "Update"}
+                </Button>
+              </div>
+            ) : (
+              <div className="grid col-span-2 w-full">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {buttonLoader ? "Submitting..." : "Submit"}
+                </Button>
+              </div>
+            )}
           </form>
         </div>
       </SheetContent>

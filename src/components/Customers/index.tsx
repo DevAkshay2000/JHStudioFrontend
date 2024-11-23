@@ -8,8 +8,19 @@ import ReactLoader from "../../components/ui/sharedComponents/ReactLoader";
 import AlertBox from "../ui/sharedComponents/AlertBox";
 // Import toaster for success or error msg popup
 import { Toaster } from "react-hot-toast";
+// Importing context
+import { FetchDataProvider } from "../context/fetchTableDataContext";
 
-export default function Customers() {
+export default function Customers(): JSX.Element {
+  return (
+    <FetchDataProvider>
+      <CustomersTable />
+    </FetchDataProvider>
+  );
+}
+
+function CustomersTable(): JSX.Element {
+  // Table hook
   const {
     columns,
     data,
@@ -18,7 +29,11 @@ export default function Customers() {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
+    dataEditModeData,
+    handleEditSubmit,
+    editButtonLoader,
   } = useCustomerTable();
+  // Add hook
   const { handleCustomerAddSubmit, buttonLoader } = useAddEditCustomers();
 
   return (
@@ -36,6 +51,9 @@ export default function Customers() {
               formGenSchema={dynamicFormSchema}
               onSubmit={handleCustomerAddSubmit}
               buttonLoader={buttonLoader}
+              editButtonLoader={editButtonLoader}
+              editModeData={dataEditModeData as any}
+              onEditSubmit={handleEditSubmit as any}
             />
           </div>
         </div>
