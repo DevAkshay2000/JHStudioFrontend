@@ -1,0 +1,35 @@
+{
+    "table": [
+      {
+        "header": "Item Name",
+        "name":"",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Price ($)",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Tax Rate (%)",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Quantity",
+        "type": "number",
+        "disabled": false,
+        "validations": []
+      },
+      {
+        "header": "Amount ($)",
+        "type": "readonly",
+        "disabled": false,
+        "validations": []
+      }
+    ]
+  }

@@ -49,6 +49,7 @@ const mainMenuItems: MenuItem[] = [
     icon: MdAdminPanelSettings,
     subItems: [
       { title: "Customers", url: `${AppRoutes.CUSTOMER}` },
+      { title: "Service Session", url: `${AppRoutes.SERVICESESSIONS}` },
       { title: "Products", url: `${AppRoutes.PRODUCTS}` },
     ],
   },

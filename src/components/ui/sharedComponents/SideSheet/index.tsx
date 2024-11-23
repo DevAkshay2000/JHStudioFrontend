@@ -43,12 +43,14 @@ interface SideSheetProps {
   formGenSchema: SampleSchema;
   onSubmit: () => void;
   buttonLoader: boolean;
+  maxWidth?: number;
 }
 
 export function SideSheet({
   formGenSchema,
   onSubmit,
   buttonLoader,
+  maxWidth,
 }: SideSheetProps): JSX.Element {
   // Zod validation schema based on field validations
   const validationSchema = z.object(
@@ -131,7 +133,7 @@ export function SideSheet({
           <FaPlus /> Add New {formGenSchema?.buttonName}
         </Button>
       </SheetTrigger>
-      <SheetContent style={{ maxWidth: "40vw" }}>
+      <SheetContent style={{ maxWidth: maxWidth ? `${maxWidth}vw` : "40vw" }}>
         <SheetHeader>
           <SheetTitle>{formGenSchema?.sheetTitle}</SheetTitle>
           <SheetDescription>{formGenSchema?.sheetDescription}</SheetDescription>

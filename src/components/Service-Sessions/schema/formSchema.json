@@ -1,0 +1,57 @@
+{
+  "menuId": 16,
+  "postUrl": "/service-sessions",
+  "buttonName": "Service Sessions",
+  "sheetTitle": "New Service Session",
+  "sheetDescription": "",
+  "fields": [
+    {
+      "label": "Code",
+      "name": "code",
+      "type": "text",
+      "required": false,
+      "disabled": true,
+      "error": "Code field is required",
+      "validations": [
+
+      ]
+    },
+    {
+      "label": "Txn Date",
+      "name": "txnDate",
+      "type": "date",
+      "required": true,
+      "error": "TxnDate field is required",
+      "validations": [
+        {
+          "min": 3,
+          "message": "Should have min 3 characters"
+        },
+        {
+          "max": 100,
+          "message": "Should not have more than 100 characters"
+        }
+      ]
+    },
+    {
+      "label": "Customer",
+      "name": "customer",
+      "type": "autoComplete",
+      "targetMenuId": 14,
+      "optionsAPI": "/customers",
+      "required": true,
+      "isAddAllowed": true,
+      "error": "Customer field is required",
+      "validations": []
+    },
+    {
+      "label": "Payment Type",
+      "name": "paymentType",
+      "type": "select",
+      "optionsAPI": "/payment-types",
+      "required": true,
+      "error": "Payment Type field is required",
+      "validations": []
+    }
+  ]
+}
