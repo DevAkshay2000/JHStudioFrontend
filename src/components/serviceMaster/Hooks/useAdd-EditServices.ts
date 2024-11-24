@@ -6,16 +6,16 @@ import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModif
 import toast from "react-hot-toast";
 import { useFetchDataContext } from "../../context/fetchTableDataContext";
 
-const useAddEditCustomers = () => {
+const useAddEditServices = () => {
   //Importing global state from context
-  const { isRefresh, setIsRefresh, sheetOpen, setSheetOpen, resetFormData, setResetFormData  } =
+  const { isRefresh, setIsRefresh, sheetOpen, setSheetOpen, resetFormData, setResetFormData } =
     useFetchDataContext();
-  // state for button loadewr
+  // state for button loader
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
 
   // On submit handler to saving new record
   const handleCustomerAddSubmit = async (data?: any) => {
-    // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
+    // Following utility will modify payload for isInactive and dropdown ids and add created and modified Date
     const payload = PayloadModify(dynamicFormSchema, data);
     try {
       setButtonLoader(true);
@@ -37,4 +37,4 @@ const useAddEditCustomers = () => {
 
   return { handleCustomerAddSubmit, buttonLoader };
 };
-export default useAddEditCustomers;
+export default useAddEditServices;

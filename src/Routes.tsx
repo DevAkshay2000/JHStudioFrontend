@@ -4,6 +4,7 @@ import CustomerComponent from "./components/Customers";
 import Dashboard from "./components/Dashboard";
 import Products from "./components/Products";
 import ServiceSessions from "./components/Service-Sessions";
+import Services from "./components/serviceMaster";
 
 function AppRouter() {
   return (
@@ -12,6 +13,7 @@ function AppRouter() {
       <Route path={Approutes.CUSTOMER} element={<CustomerComponent />} />
       <Route path={Approutes.PRODUCTS} element={<Products />} />
       <Route path={Approutes.SERVICESESSIONS} element={<ServiceSessions />} />
+      <Route path={Approutes.SERVICES} element={<Services />} />
     </Routes>
   );
 }

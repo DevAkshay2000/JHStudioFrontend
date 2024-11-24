@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
-import { GrServices } from "react-icons/gr";
+// import { GrServices } from "react-icons/gr";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,20 +49,20 @@ const mainMenuItems: MenuItem[] = [
     icon: MdAdminPanelSettings,
     subItems: [
       { title: "Customers", url: `${AppRoutes.CUSTOMER}` },
+      { title: "Services", url: `${AppRoutes.SERVICES}` },
       { title: "Service Session", url: `${AppRoutes.SERVICESESSIONS}` },
-      { title: "Products", url: `${AppRoutes.PRODUCTS}` },
     ],
   },
-  {
-    title: "Services",
-    url: "#",
-    icon: GrServices,
-    subItems: [
-      { title: "Hair Cut", url: "#annual" },
-      { title: "Face Clean Up", url: "#monthly" },
-      { title: "Face Massage", url: "#weekly" },
-    ],
-  },
+  // {
+  //   title: "Services",
+  //   url: "#",
+  //   icon: GrServices,
+  //   subItems: [
+  //     { title: "Hair Cut", url: "#annual" },
+  //     { title: "Face Clean Up", url: "#monthly" },
+  //     { title: "Face Massage", url: "#weekly" },
+  //   ],
+  // },
 ];
 
 export function AppSidebar() {

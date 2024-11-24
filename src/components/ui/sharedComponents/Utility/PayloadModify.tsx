@@ -10,6 +10,8 @@ export default function PayloadModify(dynamicFormSchema: any, data: any) {
       payloadObj[key] = value ? 1 : 0;
     } else if (nameTypeMapping[key] === "select") {
       payloadObj[key] = { id: Number(value) };
+    } else if (nameTypeMapping[key] === "number") {
+      payloadObj[key] = Number(value);
     } else {
       payloadObj[key] = value;
     }

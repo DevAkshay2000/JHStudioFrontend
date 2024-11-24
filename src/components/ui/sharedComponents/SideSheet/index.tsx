@@ -23,6 +23,7 @@ import { useFetchDataContext } from "@/components/context/fetchTableDataContext"
 
 // Form Fields schema
 type FieldSchema = {
+  readOnly?: boolean | undefined;
   label: string;
   name: string;
   type: string;
@@ -68,7 +69,8 @@ export function SideSheet({
   editButtonLoader,
   editModeData,
 }: SideSheetProps): JSX.Element {
-  const { selectedRecordId, sheetOpen, setSheetOpen } = useFetchDataContext();
+  const { selectedRecordId, sheetOpen, setSheetOpen, resetFormData } =
+    useFetchDataContext();
 
   // Zod validation schema based on field validations
   const validationSchema = z.object(
@@ -107,11 +109,17 @@ export function SideSheet({
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
+    reset,
   } = useForm({
     resolver: zodResolver(validationSchema),
   });
 
-  //Sewtting up value in edit to each field
+  // Reset form entries after submission of data successfully
+  useEffect(() => {
+    reset();
+  }, [reset, resetFormData]);
+
+  //Setting up value in edit to each field
   useEffect(() => {
     const nameTypeMapping: any = {};
     formGenSchema?.fields?.forEach((element: any) => {
@@ -142,6 +150,7 @@ export function SideSheet({
           id: true,
           name: true,
           stateId: true,
+          percentage: true,
         },
       };
       try {
@@ -163,6 +172,9 @@ export function SideSheet({
       }
     });
   }, [formGenSchema.fields]);
+
+  //State for selected tax rate
+  const [taxValue, setTaxValue] = useState<number | null>(null);
 
   return (
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -209,10 +221,26 @@ export function SideSheet({
                         <select
                           {...controllerField}
                           className="p-2 border border-gray-300 rounded w-full"
+                          onChange={(e) => {
+                            controllerField.onChange(e);
+                            if (e.target.name === "tax") {
+                              const selectedOption =
+                                e.target.selectedOptions[0];
+                              const taxPerc =
+                                selectedOption.getAttribute("data-tax-perc");
+                              setTaxValue(Number(taxPerc));
+                            } else {
+                              setTaxValue(null);
+                            }
+                          }}
                         >
                           <option value="">-- Select an option --</option>
                           {(dropdownOptions[field.name] || []).map((option) => (
-                            <option key={option.id} value={option.id}>
+                            <option
+                              key={option.id}
+                              value={option.id}
+                              data-tax-perc={option?.percentage}
+                            >
                               {option.name}
                             </option>
                           ))}
@@ -240,6 +268,25 @@ export function SideSheet({
                           className="col-span-3"
                           {...controllerField}
                           type={field.type}
+                          readOnly={field.readOnly}
+                          onChange={(e) => {
+                            controllerField.onChange(e);
+                            if (
+                              e.target.name === "amount" &&
+                              taxValue &&
+                              taxValue >= 0
+                            ) {
+                              const amount = Number(e.target.value);
+                              const calculatedTaxAmount =
+                                (amount * taxValue) / 100;
+                              setValue(
+                                "taxAmount",
+                                calculatedTaxAmount.toFixed(2)
+                              );
+                            } else {
+                              setValue("taxAmount", 0);
+                            }
+                          }}
                         />
                       );
                     }

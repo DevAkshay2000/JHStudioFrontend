@@ -2,6 +2,7 @@ const appRoutes = {
   DASHBOARD: "/",
   CUSTOMER: "/customers",
   PRODUCTS: "/products",
+  SERVICES: "/services",
   SERVICESESSIONS:"/service-sessions"
 };
 

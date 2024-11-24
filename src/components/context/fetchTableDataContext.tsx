@@ -7,6 +7,7 @@ const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
+  const [resetFormData, setResetFormData] = useState<boolean>(false);
 
   return (
     <FetchDataContext.Provider
@@ -17,6 +18,8 @@ const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
         setSelectedRecordId,
         sheetOpen,
         setSheetOpen,
+        resetFormData,
+        setResetFormData,
       }}
     >
       {children}

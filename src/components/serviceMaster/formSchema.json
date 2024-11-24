@@ -1,0 +1,61 @@
+{
+  "menuId": 16,
+  "postUrl": "/services",
+  "buttonName": "Service",
+  "sheetTitle": "Add New Service",
+  "sheetDescription": "",
+  "fields": [
+    {
+    "label": "Service Name",
+    "name": "name",
+    "type": "text",
+    "required": true,
+    "error": "Service Name is required",
+    "validations": [
+      {
+        "min": 3,
+        "message": "Should have min 3 characters"
+      },
+      {
+        "max": 100,
+        "message": "Should not have more than 100 characters"
+      }
+    ]
+    },
+    {
+      "label": "Tax",
+      "name": "tax",
+      "type": "select",
+      "optionsAPI": "/taxes",
+      "required": false,
+      "error": "Tax field is required",
+      "validations": []
+    },
+    {
+      "label": "Service Charge (Rs.)",
+      "name": "amount",
+      "type": "number",
+      "required": true,
+      "error": "Amount field is required",
+      "validations": []
+    },
+    {
+      "label": "Tax Amount (Rs.)",
+      "name": "taxAmount",
+      "type": "number",
+      "required": true,
+      "readOnly": true,
+      "error": "Tax Amount field is required",
+      "validations": []
+    },
+    {
+      "label": "Status",
+      "name": "isInactive",
+      "type": "checkbox",
+      "required": true,
+      "defaultValue": true,
+      "error": "Status field is required",
+      "validations": []
+    }
+  ]
+}

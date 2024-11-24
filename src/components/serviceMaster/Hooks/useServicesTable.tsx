@@ -25,26 +25,26 @@ import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModif
 export type ColumnHeaderType = {
   id: string;
   status: "pending" | "processing" | "success" | "failed";
-  email: string;
-  name?: string;
-  mobile?: string;
+  name: string;
+  taxAmount: number;
+  amount: number;
+  isInactive: number;
   sortBy?: string;
 };
 
 //interface for Column Data
-interface CustomerData {
+interface ServicesData {
   id: string;
   name: string;
-  mobile: number;
-  birthDate: string;
-  email: string;
+  taxAmount: number;
+  amount: number;
   isInactive: number;
   createdDate: string;
   modifiedDate: string;
 }
 
-const useCustomerTable = () => {
-  const [tableData, setTableData] = useState<CustomerData[]>([]);
+const useServicesTable = () => {
+  const [tableData, setTableData] = useState<ServicesData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -82,43 +82,31 @@ const useCustomerTable = () => {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Customer Name
+          Service Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "birthdateUpdated",
+      accessorKey: "amount",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Of Birth
+          Service Charge
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "mobile",
+      accessorKey: "taxAmount",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Mobile Number
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "email",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email ID
+          Tax/Service
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -241,24 +229,7 @@ const useCustomerTable = () => {
       setSelectedRecordId(recordId);
       let response: any;
       const fetchEdiData = async () => {
-        const apiFilter = {
-          relations: [
-            {
-              name: "city",
-            },
-            {
-              name: "state",
-            },
-            {
-              name: "country",
-            },
-          ],
-        };
-        response = await getDataById(
-          dynamicFormSchema.postUrl,
-          recordId,
-          apiFilter
-        );
+        response = await getDataById(dynamicFormSchema.postUrl, recordId);
         setEditModaData(response.data);
       };
       fetchEdiData();
@@ -266,6 +237,7 @@ const useCustomerTable = () => {
     }
   };
 
+  //Handle Update function to update form records
   const handleEditSubmit = async (data: any) => {
     // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
     const payload = PayloadModify(dynamicFormSchema, data);
@@ -304,4 +276,4 @@ const useCustomerTable = () => {
   };
 };
 
-export default useCustomerTable;
+export default useServicesTable;
