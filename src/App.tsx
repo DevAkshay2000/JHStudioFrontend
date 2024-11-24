@@ -5,17 +5,24 @@ import { AppSidebar } from "@/components/Sidebar";
 import RoutingFile from "./Routes";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router } from "react-router-dom";
+import LoginPage from "./components/auth/Login";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <Router>
       <SidebarProvider>
-        <AppSidebar />
-        <main>
-          <SidebarTrigger />
-          {children}
-        </main>
-        <RoutingFile />
+        {localStorage.getItem("a") ? (
+          <>
+            <AppSidebar />
+            <main>
+              <SidebarTrigger />
+              {children}
+            </main>
+            <RoutingFile />
+          </>
+        ) : (
+          <LoginPage />
+        )}
       </SidebarProvider>
       <Footer />
     </Router>

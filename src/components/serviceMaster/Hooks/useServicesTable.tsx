@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import getData from "@/api/getData.api";
+import getData from "@/API/getData.api";
 import { useEffect, useState } from "react";
 import deleteDataAPI from "@/api/deleteData.api";
 import toast from "react-hot-toast";

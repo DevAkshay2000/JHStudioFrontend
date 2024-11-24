@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +14,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { MdAdminPanelSettings } from "react-icons/md";
+// import { MdAdminPanelSettings } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
 // import { GrServices } from "react-icons/gr";
 import {
@@ -24,6 +26,8 @@ import {
 import { ChevronUp, User2 } from "lucide-react";
 import AppRoutes from "../../AppRoutes";
 import { Link } from "react-router-dom";
+import { initStore } from "@/store/init-store";
+import { useAppDispatch, useAppSelector } from "@/store/hook";
 
 // Define the type for the menu items
 interface MenuItem {
@@ -34,41 +38,55 @@ interface MenuItem {
 }
 
 // Main menu items with icons
-const mainMenuItems: MenuItem[] = [
-  {
-    title: "Dashboard",
-    url: "#",
-    icon: MdDashboard,
-    subItems: [
-      { title: "Sale Insights", url: `${AppRoutes.DASHBOARD}` },
-    ],
-  },
-  {
-    title: "Admin",
-    url: "#",
-    icon: MdAdminPanelSettings,
-    subItems: [
-      { title: "Customers", url: `${AppRoutes.CUSTOMER}` },
-      { title: "Services", url: `${AppRoutes.SERVICES}` },
-      { title: "Service Session", url: `${AppRoutes.SERVICESESSIONS}` },
-    ],
-  },
-  // {
-  //   title: "Services",
-  //   url: "#",
-  //   icon: GrServices,
-  //   subItems: [
-  //     { title: "Hair Cut", url: "#annual" },
-  //     { title: "Face Clean Up", url: "#monthly" },
-  //     { title: "Face Massage", url: "#weekly" },
-  //   ],
-  // },
-];
+// const mainMenuItems: MenuItem[] = [
+//   {
+//     title: "Dashboard",
+//     url: "#",
+//     icon: MdDashboard,
+//     subItems: [{ title: "Sale Insights", url: `${AppRoutes.DASHBOARD}` }],
+//   },
+//   {
+//     title: "Admin",
+//     url: "#",
+//     icon: MdAdminPanelSettings,
+//     subItems: [
+//       { title: "Customers", url: `${AppRoutes.CUSTOMER}` },
+//       { title: "Service Session", url: `${AppRoutes.SERVICESESSIONS}` },
+//       { title: "Products", url: `${AppRoutes.PRODUCTS}` },
+//     ],
+//   },
+//   {
+//     title: "Services",
+//     url: "#",
+//     icon: GrServices,
+//     subItems: [
+//       { title: "Hair Cut", url: "#annual" },
+//       { title: "Face Clean Up", url: "#monthly" },
+//       { title: "Face Massage", url: "#weekly" },
+//     ],
+//   },
+// ];
 
 export function AppSidebar() {
+  const [mainMenuItems, setMainMenuItems] = useState<MenuItem[]>([]);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(initStore());
+  }, []);
+  const { menuRoutes }: any = useAppSelector((state) => state?.headerMenu);
   // Type the state as an array of numbers
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
-
+  useEffect(() => {
+    setMainMenuItems([
+      {
+        title: "Dashboard",
+        url: "#",
+        icon: MdDashboard,
+        subItems: [{ title: "Sale Insights", url: `${AppRoutes.DASHBOARD}` }],
+      },
+      ...menuRoutes,
+    ]);
+  }, [menuRoutes]);
   // Add type annotation for the index parameter
   const toggleMenu = (index: number): void => {
     setOpenIndexes((prev) =>
@@ -76,6 +94,10 @@ export function AppSidebar() {
     );
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
   return (
     <Sidebar>
       <SidebarContent className="flex flex-col h-full">
@@ -94,7 +116,7 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                     {openIndexes.includes(index) && (
                       <SidebarMenuSub>
-                        {menu.subItems.map((subItem, subIndex) => (
+                        {menu.subItems.map((subItem: any, subIndex: any) => (
                           <SidebarMenuSubItem key={subIndex}>
                             <Link to={subItem.url}>{subItem.title}</Link>
                           </SidebarMenuSubItem>
@@ -124,7 +146,9 @@ export function AppSidebar() {
                   className="w-[--radix-popper-anchor-width]"
                 >
                   <DropdownMenuItem>
-                    <span className="float-right">Sign out</span>
+                    <span className="float-right" onClick={handleLogout}>
+                      Sign out
+                    </span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
