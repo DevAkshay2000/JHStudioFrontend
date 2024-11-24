@@ -1,8 +1,9 @@
 const appRoutes = {
+  LOGIN: "/login",
   DASHBOARD: "/",
   CUSTOMER: "/customers",
   PRODUCTS: "/products",
-  SERVICESESSIONS:"/service-sessions"
+  SERVICESESSIONS: "/service-sessions",
 };
 
 export default appRoutes;
