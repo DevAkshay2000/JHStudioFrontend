@@ -179,13 +179,18 @@ export function SideSheet({
   return (
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
           <FaPlus /> Add New {formGenSchema?.buttonName}
         </Button>
       </SheetTrigger>
       <SheetContent style={{ maxWidth: maxWidth ? `${maxWidth}vw` : "40vw" }}>
         <SheetHeader>
-          <SheetTitle>{formGenSchema?.sheetTitle}</SheetTitle>
+          <SheetTitle style={{ fontFamily: "'Playfair Display', serif" }}>
+            {formGenSchema?.sheetTitle}
+          </SheetTitle>
           <SheetDescription>{formGenSchema?.sheetDescription}</SheetDescription>
         </SheetHeader>
         <div className="grid grid-cols-2 gap-4">

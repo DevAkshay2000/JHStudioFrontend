@@ -28,6 +28,7 @@ import AppRoutes from "../../AppRoutes";
 import { Link } from "react-router-dom";
 import { initStore } from "@/store/init-store";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
+import { FiLogOut } from "react-icons/fi";
 
 // Define the type for the menu items
 interface MenuItem {
@@ -74,6 +75,7 @@ export function AppSidebar() {
     dispatch(initStore());
   }, []);
   const { menuRoutes }: any = useAppSelector((state) => state?.headerMenu);
+  const { userData }: any = useAppSelector((state) => state?.userData);
   // Type the state as an array of numbers
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
   useEffect(() => {
@@ -102,14 +104,20 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent className="flex flex-col h-full">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-bold mb-2">
+          <SidebarGroupLabel
+            className="text-lg font-bold mb-6 mt-2"
+            style={{
+              fontFamily: "'Edu AU VIC WA NT Pre', sans-serif",
+              color: "var(--color-primary)",
+            }}
+          >
             JH Hair & Beauty Studio
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainMenuItems.map((menu, index) => (
                 <div key={index} className="group/collapsible">
-                  <SidebarMenuItem>
+                  <SidebarMenuItem className="text-slate-950">
                     <SidebarMenuButton onClick={() => toggleMenu(index)}>
                       {menu.icon && <menu.icon size={25} />}
                       <span>{menu.title}</span>
@@ -137,16 +145,30 @@ export function AppSidebar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
-                    <User2 /> Username
+                    <User2 className="text-slate-950" />{" "}
+                    <span className="text-slate-950 text-base">
+                      {" "}
+                      Logged-In -:{" "}
+                      <span
+                        className="text-bold  text-base"
+                        style={{ color: "var(--color-primary)" }}
+                      >
+                        {userData.userName}
+                      </span>
+                    </span>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   side="top"
-                  className="w-[--radix-popper-anchor-width]"
+                  className="w-[--radix-popper-anchor-width] text-slate-950"
                 >
                   <DropdownMenuItem>
-                    <span className="float-right" onClick={handleLogout}>
+                    <span
+                      className="flex items-center justify-end"
+                      onClick={handleLogout}
+                    >
+                      <FiLogOut className="mr-2" />
                       Sign out
                     </span>
                   </DropdownMenuItem>

@@ -82,7 +82,10 @@ DataTableProps<TData, TValue>) {
           // }}
           className="max-w-sm"
         />
-        <p className="text-sm font-normal uppercase hidden sm:block">
+        <p
+          className="text-sm font-serif uppercase hidden sm:block"
+          style={{ color: "var(--color-primary)" }}
+        >
           JH Hair & Beauty Studio
         </p>
       </div>
@@ -94,7 +97,10 @@ DataTableProps<TData, TValue>) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="border-x">
+                    <TableHead
+                      key={header.id}
+                      className="border-x text-slate-950 font-serif"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

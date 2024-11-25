@@ -6,7 +6,7 @@ function Loader({ loading }: any): JSX.Element {
     <>
       {loading && (
         <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-60 z-50">
-          <InfinitySpin width="300" color="#000000" />
+          <InfinitySpin width="300" color="var(--color-primary)" />
         </div>
       )}
     </>

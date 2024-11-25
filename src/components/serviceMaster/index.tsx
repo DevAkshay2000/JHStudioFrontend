@@ -43,7 +43,12 @@ function ServicesTable(): JSX.Element {
         <div className="grid gap-4 grid-cols-2 px-2">
           <ReactLoader loading={loading} />
           <div>
-            <p className="mb-5 text-lg font-bold uppercase">Our Services</p>
+            <p
+              className="mb-5 text-lg font-normal uppercase"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Our Services
+            </p>
           </div>
           {/* Div for side short form */}
           <div className="mb-5 flex justify-end">
