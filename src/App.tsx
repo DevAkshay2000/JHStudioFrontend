@@ -9,22 +9,39 @@ import LoginPage from "./components/auth/Login";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
+    // <Router>
+    //   <SidebarProvider>
+    //     {localStorage.getItem("a") ? (
+    //       <>
+    //         <AppSidebar />
+    //         <main>
+    //           <SidebarTrigger />
+    //           {children}
+    //         </main>
+    //         <RoutingFile />
+    //       </>
+    //     ) : (
+    //       <LoginPage />
+    //     )}
+    //   </SidebarProvider>
+    //   <Footer />
+    // </Router>
     <Router>
-      <SidebarProvider>
-        {localStorage.getItem("a") ? (
-          <>
+      {localStorage.getItem("a") ? (
+        <>
+          <SidebarProvider>
             <AppSidebar />
             <main>
               <SidebarTrigger />
               {children}
             </main>
             <RoutingFile />
-          </>
-        ) : (
-          <LoginPage />
-        )}
-      </SidebarProvider>
-      <Footer />
+          </SidebarProvider>
+          <Footer />
+        </>
+      ) : (
+        <LoginPage />
+      )}
     </Router>
   );
 }
