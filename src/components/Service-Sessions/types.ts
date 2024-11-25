@@ -9,7 +9,7 @@ export interface SaleTabInterface {
   }; // Reference to the Services entity
   tax: {
     id: number;
-
+    name:string,
     percentage: 0;
   }; // Reference to the Taxes entity
   quantity: number; // Quantity of items or services

@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
-import getData from "@/api/getData.api";
+import getData from "@/API/getData.api";
 import { TabTable } from "../TabTable";
 import { footerDataInterface } from "@/components/Service-Sessions/types";
 import Autocomplete from "../Combobox";

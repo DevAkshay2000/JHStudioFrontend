@@ -4,11 +4,13 @@ import dynamicFormSchema from "../schema/formSchema.json";
 import { useEffect, useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
-import getData from "@/api/getData.api";
-import { date } from "zod";
+import getData from "@/API/getData.api";
+import { date, string } from "zod";
 import { footerDataInterface, SaleTabInterface } from "../types";
+import { useAppSelector } from "@/store/hook";
 
 const useAddEditServiceSessions = () => {
+  const { userData }: any = useAppSelector((state) => state?.userData);
   // state for button loadewr
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
 
@@ -38,7 +40,7 @@ const useAddEditServiceSessions = () => {
     id: 0,
     txnHeader: { id: 0 }, // SaleHeaders object reference (null initially)
     service: { id: 0, name: "" }, // Services object reference (null initially)
-    tax: { id: 0, percentage: 0 }, // Taxes object reference (null initially)
+    tax: { id: 0, percentage: 0, name: "" }, // Taxes object reference (null initially)
     quantity: 0, // Default quantity
     rate: 0, // Default rate
     amount: 0, // Default amount
@@ -84,6 +86,7 @@ const useAddEditServiceSessions = () => {
         tax: {
           id: row.tax.id,
           percentage: row.tax.percentage,
+          name: row.tax.name,
         },
         quantity: 1,
         rate: row.amount,
@@ -126,20 +129,49 @@ const useAddEditServiceSessions = () => {
   const handleSubmit = async (data?: any) => {
     // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
     const payload = PayloadModify(dynamicFormSchema, data);
-    console.log(data)
-    // try {
-    //   setButtonLoader(true);
-    //   const response = await postData(dynamicFormSchema.postUrl, payload);
-    //   if (response) {
-    //     setButtonLoader(false);
-    //     toast.success("Record added successfully..!");
-    //   }
-    // } catch (err: any) {
-    //   if (err) {
-    //     setButtonLoader(false);
-    //     toast.error("Error while saving record, Please try again!");
-    //   }
-    // }
+    try {
+      setButtonLoader(true);
+      // const filterData = selectedData.map(({ id, ...rest }) => rest);
+      const filterData = selectedData.map((val) => {
+        if (`${val.id}`.startsWith("new")) {
+          const { id, txnHeader, ...rest } = val;
+          return {
+            ...rest,
+            createdDate: new Date(),
+            modifiedDate: new Date(),
+          };
+        } else {
+          return { ...val, createdDate: new Date(), modifiedDate: new Date() };
+        }
+      });
+      console.log(userData);
+      console.log(filterData);
+      const response = await postData(dynamicFormSchema.postUrl, {
+        ...payload,
+        ...{
+          subTotal: footerData.subtotal,
+          totalTax: footerData.totalTax,
+          grandTotal:
+            footerData.subtotal +
+            footerData.totalTax -
+            footerData.totalDiscount,
+          totalDiscount: footerData.totalDiscount,
+          user: {
+            id: userData.userId,
+          },
+        },
+        saleLines: filterData,
+      });
+      if (response) {
+        setButtonLoader(false);
+        toast.success("Record added successfully..!");
+      }
+    } catch (err: any) {
+      if (err) {
+        setButtonLoader(false);
+        toast.error("Error while saving record, Please try again!");
+      }
+    }
   };
 
   return {
