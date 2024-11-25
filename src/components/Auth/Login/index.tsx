@@ -27,7 +27,6 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
   const handleSignIn = async (data: any) => {
-    localStorage.setItem("a", "a");
     try {
       const response = await postData("/users/login", data);
       localStorage.setItem("r_token", response.data.refreshTokenToken);

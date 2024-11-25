@@ -8,7 +8,7 @@ export default function PayloadModify(dynamicFormSchema: any, data: any) {
   for (const [key, value] of Object.entries(data)) {
     if (key === "isInactive") {
       payloadObj[key] = value ? 1 : 0;
-    } else if (nameTypeMapping[key] === "select") {
+    } else if (["select", "autoComplete"].includes(nameTypeMapping[key])) {
       payloadObj[key] = { id: Number(value) };
     } else {
       payloadObj[key] = value;

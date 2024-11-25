@@ -11,7 +11,7 @@ export default function App({ children }: { children: React.ReactNode }) {
   return (
     <Router>
       <SidebarProvider>
-        {localStorage.getItem("a") ? (
+        {localStorage.getItem("a_token") ? (
           <>
             <AppSidebar />
             <main>
