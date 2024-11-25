@@ -1,27 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import postData from "@/api/postData.api";
+import postData from "@/API/postData.api";
 import dynamicFormSchema from "../schema/formSchema.json";
 import { useEffect, useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
 import getData from "@/API/getData.api";
-import { date, string } from "zod";
 import { footerDataInterface, SaleTabInterface } from "../types";
 import { useAppSelector } from "@/store/hook";
+import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
+import getDataById from "@/API/getDataById.api";
+import updateData from "@/API/updateData.api";
 
 const useAddEditServiceSessions = () => {
   const { userData }: any = useAppSelector((state) => state?.userData);
   // state for button loadewr
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
-
+  const {
+    isRefresh,
+    setIsRefresh,
+    selectedRecordId,
+    setSelectedRecordId,
+    sheetOpen,
+    setSheetOpen,
+    resetFormData,
+    setResetFormData,
+    footerData,
+    setFooterData,
+  } = useFetchDataContext();
+  console.log("setSelectedRecordIdsssss", selectedRecordId);
   //**************Item details tab *********************************************
   const [selectedData, setSelectedData] = useState<SaleTabInterface[]>([]);
-  const [footerData, setFooterData] = useState<footerDataInterface>({
-    subtotal: 0,
-    totalTax: 0,
-    grandTotal: 0,
-    totalDiscount: 0,
-  });
+  // const [footerData, setFooterData] = useState<footerDataInterface>({
+  //   subtotal: 0,
+  //   totalTax: 0,
+  //   grandTotal: 0,
+  //   totalDiscount: 0,
+  // });
   //state to store searchBox Data
   const [searchBoxData, setSearchBoxData] = useState<any[]>([]);
   const searchBoxSchema = {
@@ -125,6 +139,79 @@ const useAddEditServiceSessions = () => {
 
   //**************Item details tab end ****************************************
 
+  useEffect(() => {
+    let response: any;
+    const fetchEdiData = async () => {
+      const apiFilter = {
+        fields: {
+          id: true,
+        },
+        relations: [
+          {
+            name: "saleLines",
+            relations: [
+              {
+                name: "service",
+                fields: {
+                  id: true,
+                  name: true,
+                },
+              },
+              {
+                name: "txnHeader",
+                fields: {
+                  id: true,
+                  name: true,
+                },
+              },
+              {
+                name: "tax",
+                fields: {
+                  id: true,
+                  name: true,
+                  percentage: true,
+                },
+              },
+            ],
+          },
+        ],
+      };
+      response = await getDataById(
+        dynamicFormSchema.postUrl,
+        selectedRecordId,
+        apiFilter
+      );
+      console.log("response123455", response?.data?.saleLines);
+      const filterData = response?.data?.saleLines.map(
+        (val: SaleTabInterface): SaleTabInterface => {
+          return {
+            id: val.id,
+            txnHeader: { id: val?.txnHeader?.id }, // SaleHeaders object reference (null initially)
+            service: { id: val.service.id, name: val.service.name }, // Services object reference (null initially)
+            tax: {
+              id: val.tax.id,
+              percentage: val.tax.percentage,
+              name: val.tax.name,
+            }, // Taxes object reference (null initially)
+            quantity: val.quantity, // Default quantity
+            rate: val.rate, // Default rate
+            amount: val.amount, // Default amount
+            discountAmount: val.discountAmount, // Optional, set as null
+            taxAmount: val.taxAmount, // Optional, set as null
+            createdDate: val.createdDate, // Default string (should be populated on creation)
+            modifiedDate: val.modifiedDate, // Default string (should be populated on update)
+          };
+        }
+      );
+      setSelectedData(filterData);
+      // console.log("response123455", response.data);
+    };
+    if (selectedRecordId) {
+      try {
+        fetchEdiData();
+      } catch (e) {}
+    }
+  }, [selectedRecordId]);
   // On submit handler to saving new record
   const handleSubmit = async (data?: any) => {
     // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
@@ -144,27 +231,55 @@ const useAddEditServiceSessions = () => {
           return { ...val, createdDate: new Date(), modifiedDate: new Date() };
         }
       });
-      console.log(userData);
-      console.log(filterData);
-      const response = await postData(dynamicFormSchema.postUrl, {
-        ...payload,
-        ...{
-          subTotal: footerData.subtotal,
-          totalTax: footerData.totalTax,
-          grandTotal:
-            footerData.subtotal +
-            footerData.totalTax -
-            footerData.totalDiscount,
-          totalDiscount: footerData.totalDiscount,
-          user: {
-            id: userData.userId,
+      let response = null;
+      console.log("selectedRecordId", selectedRecordId);
+      if (selectedRecordId) {
+        response = await updateData(
+          dynamicFormSchema.postUrl,
+          {
+            ...payload,
+            ...{
+              id: selectedRecordId,
+              subTotal: footerData.subtotal,
+              totalTax: footerData.totalTax,
+              grandTotal:
+                footerData.subtotal +
+                footerData.totalTax -
+                footerData.totalDiscount,
+              totalDiscount: footerData.totalDiscount,
+              user: {
+                id: userData.userId,
+              },
+            },
+            saleLines: filterData,
           },
-        },
-        saleLines: filterData,
-      });
+          selectedRecordId
+        );
+      } else {
+        response = await postData(dynamicFormSchema.postUrl, {
+          ...payload,
+          ...{
+            subTotal: footerData.subtotal,
+            totalTax: footerData.totalTax,
+            grandTotal:
+              footerData.subtotal +
+              footerData.totalTax -
+              footerData.totalDiscount,
+            totalDiscount: footerData.totalDiscount,
+            user: {
+              id: userData.userId,
+            },
+          },
+          saleLines: filterData,
+        });
+      }
+
       if (response) {
+        setSheetOpen(!sheetOpen);
         setButtonLoader(false);
-        toast.success("Record added successfully..!");
+        setIsRefresh(!isRefresh);
+        setResetFormData(!resetFormData);
+        toast.success("Record updated successfully..!");
       }
     } catch (err: any) {
       if (err) {

@@ -1,7 +1,7 @@
 export interface SaleTabInterface {
   id: number | string; // Unique identifier
   txnHeader?: {
-    id: number;
+    id?: number;
   }; // Reference to the SaleHeaders entity
   service: {
     id: number;

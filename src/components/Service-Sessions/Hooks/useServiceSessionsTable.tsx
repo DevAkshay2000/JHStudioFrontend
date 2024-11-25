@@ -14,8 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import getData from "@/API/getData.api";
 import { useEffect, useState } from "react";
-import deleteDataAPI from "@/api/deleteData.api";
+import deleteDataAPI from "@/API/deleteData.api";
 import toast from "react-hot-toast";
+import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
+import updateData from "@/API/updateData.api";
+import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
+import getDataById from "@/API/getDataById.api";
 
 // Type defination for columns header
 export type ColumnHeaderType = {
@@ -44,8 +48,10 @@ const useServiceSessionsTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [dataEditModeData, setEditModaData] = useState([]);
+  //Column  const [dataEditModeData, setEditModaData] = useState([]);
+  const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
 
-  //Column defination
   const columns: ColumnDef<ColumnHeaderType>[] = [
     {
       accessorKey: "code",
@@ -60,61 +66,40 @@ const useServiceSessionsTable = () => {
       ),
     },
     {
-      accessorKey: "name",
+      accessorKey: "txnDate",
+
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Customer Name
+          Transaction Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "birthdateUpdated",
+      accessorKey: "customer",
+      accessorFn: (row: any) => row.customer.name,
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Of Birth
+         Customer
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "mobile",
+      accessorKey: "artist",
+      accessorFn: (row: any) => row.user.name,
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Mobile Number
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "email",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "isInactiveUpdated",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
+          Artist
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -136,7 +121,7 @@ const useServiceSessionsTable = () => {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(records.id)}
+                onClick={() => handleEditClick(Number(records.id))}
               >
                 Edit Record
               </DropdownMenuItem>
@@ -154,13 +139,40 @@ const useServiceSessionsTable = () => {
       },
     },
   ];
-
+  const {
+    isRefresh,
+    setIsRefresh,
+    selectedRecordId,
+    setSelectedRecordId,
+    sheetOpen,
+    setSheetOpen,
+    resetFormData,
+    setResetFormData,
+    footerData,
+    setFooterData,
+  } = useFetchDataContext();
   //API for table data
   const fetchTableData = async () => {
     try {
       setLoading(true);
-      console.log("dsds",dynamicFormSchema.postUrl)
-      let response: any = await getData("/sale-headers");
+      let response: any = await getData("/sale-headers", {
+        relations: [
+          {
+            name: "customer",
+            fields: {
+              name: true,
+              id: true,
+            },
+          },
+          {
+            name: "user",
+            fields: {
+              name: true,
+              id: true,
+            },
+          },
+        ],
+      });
       // response = response?.data?.map((item: any) => {
       //   const originalDate = new Date(item.birthDate);
       //   const day = String(originalDate.getUTCDate()).padStart(2, "0");
@@ -174,7 +186,7 @@ const useServiceSessionsTable = () => {
       //     item.isInactive === 1 ? "Active" : "Not Active";
       //   return item;
       // });
-      console.log(response)
+      console.log(response);
       setTableData(response.data);
       setLoading(false);
     } catch (err: any) {
@@ -185,7 +197,7 @@ const useServiceSessionsTable = () => {
 
   useEffect(() => {
     fetchTableData();
-  }, []);
+  }, [isRefresh]);
 
   const handleDeleteClick = (id: number) => {
     setShowAlert(true);
@@ -200,12 +212,71 @@ const useServiceSessionsTable = () => {
         toast.success("Record deleted successfully");
         setTimeout(() => {
           fetchTableData(); // Calling function after successfully deleting record for updated table data
-        }, 2000);
+        }, 1000);
       } catch (err: any) {
         if (err) {
           toast.error("Failed to delete record!");
         }
       }
+    }
+  };
+
+  const handleEditClick = (recordId: number) => {
+    if (recordId) {
+      setSelectedRecordId(recordId);
+      let response: any;
+      const fetchEdiData = async () => {
+        const apiFilter = {
+          relations: [
+            {
+              name: "paymentType",
+            },
+            {
+              name: "customer",
+            },
+          ],
+        };
+        response = await getDataById(
+          dynamicFormSchema.postUrl,
+          recordId,
+          apiFilter
+        );
+        console.log(response.data);
+        setFooterData({
+          subtotal: response.data.subTotal,
+          totalTax: response.data.totalTax,
+          grandTotal: response.data.grandTotal,
+          totalDiscount: response.data.totalDiscount,
+        });
+        setEditModaData(response.data);
+      };
+      fetchEdiData();
+      setSheetOpen(!sheetOpen);
+    }
+  };
+
+  const handleEditSubmit = async (data: any) => {
+    // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
+    const payload = PayloadModify(dynamicFormSchema, data);
+    console.log(payload);
+    try {
+      setEditButtonLoader(true);
+      const response = await updateData(
+        dynamicFormSchema.postUrl,
+        payload,
+        selectedRecordId
+      );
+      if (response) {
+        setSheetOpen(!sheetOpen);
+        setEditButtonLoader(false);
+        setIsRefresh(!isRefresh);
+        setResetFormData(!resetFormData);
+        toast.success("Record updated successfully..!");
+      }
+    } catch (err: any) {
+      setEditButtonLoader(false);
+      toast.error("Error while updating record..!");
+      console.log(err);
     }
   };
 
@@ -217,6 +288,8 @@ const useServiceSessionsTable = () => {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
+    dataEditModeData,
+    handleEditSubmit,
   };
 };
 
