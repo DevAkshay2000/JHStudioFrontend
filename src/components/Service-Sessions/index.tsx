@@ -10,8 +10,16 @@ import useServiceSessionsTable from "./Hooks/useServiceSessionsTable";
 import useAddEditServiceSessions from "./Hooks/useAdd-EditServiceSessions";
 import { SideSheetTransaction } from "../ui/sharedComponents/SlideSheetTransaction";
 import tabSchema from "./schema/tabSchema.json";
-import Autocomplete  from "../ui/sharedComponents/Combobox";
-export default function ServiceSessions() {
+
+import { FetchDataProvider } from "../context/fetchTableDataContext";
+export default function ServiceSessions(): JSX.Element {
+  return (
+    <FetchDataProvider>
+      <ServiceSessionsTable />
+    </FetchDataProvider>
+  );
+}
+function ServiceSessionsTable() {
   const {
     columns,
     data,
@@ -20,6 +28,8 @@ export default function ServiceSessions() {
     showAlert,
     setShowAlert,
     handleAgreeDelete,
+    dataEditModeData,
+    // handleEditSubmit,
   } = useServiceSessionsTable();
   const {
     handleSubmit,
@@ -29,8 +39,6 @@ export default function ServiceSessions() {
     searchBoxData,
     selectNewItem,
     selectedData,
-    footerData,
-    setFooterData,
     removeSelectedItems,
   } = useAddEditServiceSessions();
 
@@ -57,9 +65,9 @@ export default function ServiceSessions() {
               searchBoxData={searchBoxData}
               selectNewItem={selectNewItem}
               selectedData={selectedData}
-              footerData={footerData}
-              setFooterData={setFooterData}
               removeSelectedItems={removeSelectedItems}
+              editModeData={dataEditModeData as any}
+              // onEditSubmit={handleEditSubmit as any}
             />
           </div>
         </div>

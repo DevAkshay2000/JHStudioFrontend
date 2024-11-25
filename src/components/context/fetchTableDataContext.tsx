@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, ReactNode, useContext, useState } from "react";
+import { footerDataInterface } from "../Service-Sessions/types";
 
 const FetchDataContext = createContext<any>(null);
 
@@ -8,7 +9,12 @@ const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
   const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null);
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
   const [resetFormData, setResetFormData] = useState<boolean>(false);
-
+  const [footerData, setFooterData] = useState<footerDataInterface>({
+    subtotal: 0,
+    totalTax: 0,
+    grandTotal: 0,
+    totalDiscount: 0,
+  });
   return (
     <FetchDataContext.Provider
       value={{
@@ -20,6 +26,8 @@ const FetchDataProvider = ({ children }: { children: ReactNode }): any => {
         setSheetOpen,
         resetFormData,
         setResetFormData,
+        footerData,
+        setFooterData
       }}
     >
       {children}

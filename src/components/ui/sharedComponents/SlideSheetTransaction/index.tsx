@@ -29,6 +29,7 @@ import { Dialog, DialogContent } from "../../dialog";
 import PayloadModify from "../Utility/PayloadModify";
 import toast from "react-hot-toast";
 import postData from "@/api/postData.api";
+import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
 
 // Form Fields schema
 type FieldSchema = {
@@ -66,6 +67,10 @@ interface SideSheetProps {
   footerData: footerDataInterface;
   setFooterData: any;
   removeSelectedItems: Function;
+  // onEditSubmit: any;
+
+  editButtonLoader: any;
+  editModeData: any;
 }
 
 export function SideSheetTransaction({
@@ -78,9 +83,12 @@ export function SideSheetTransaction({
   searchBoxData,
   selectNewItem,
   selectedData,
-  footerData,
-  setFooterData,
   removeSelectedItems,
+
+  // onEditSubmit,
+
+  editButtonLoader,
+  editModeData,
 }: SideSheetProps): JSX.Element {
   // Zod validation schema based on field validations
   const [schema, setSchema] = useState<any>({});
@@ -118,7 +126,18 @@ export function SideSheetTransaction({
       return acc;
     }, {} as Record<string, z.ZodType<any>>)
   );
-
+  const {
+    isRefresh,
+    setIsRefresh,
+    selectedRecordId,
+    setSelectedRecordId,
+    sheetOpen,
+    setSheetOpen,
+    resetFormData,
+    setResetFormData,
+    footerData,
+    setFooterData,
+  } = useFetchDataContext();
   const {
     control,
     handleSubmit,
@@ -162,7 +181,31 @@ export function SideSheetTransaction({
       }
     });
   }, [formGenSchema.fields]);
-console.log(errors)
+  // Reset form entries after submission of data successfully
+  useEffect(() => {
+    reset();
+  }, [reset, resetFormData]);
+  //Setting up value in edit to each field
+  useEffect(() => {
+    const nameTypeMapping: any = {};
+    formGenSchema?.fields?.forEach((element: any) => {
+      nameTypeMapping[element.name] = element.type;
+    });
+    if (selectedRecordId) {
+      Object.entries(editModeData).forEach(([key, value]: [string, any]) => {
+        if (nameTypeMapping[key] === "select") {
+          setValue(key, `${value?.id}`);
+        } else if (nameTypeMapping[key] === "autoComplete") {
+          setValue(key, `${value?.id}`);
+          setNQuery(`${value?.name}`);
+        } else if (nameTypeMapping[key] === "checkbox") {
+          setValue(key, Boolean(value));
+        } else {
+          setValue(key, `${value}`);
+        }
+      });
+    }
+  }, [selectedRecordId, editModeData, setValue, formGenSchema?.fields]);
   const modalFormSubmitHandler = async (values: any) => {
     const payload = PayloadModify(schema, values);
 
@@ -182,7 +225,7 @@ console.log(errors)
   };
   return (
     <div>
-      <Sheet>
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="outline">
             <FaPlus /> Add New {formGenSchema?.buttonName}

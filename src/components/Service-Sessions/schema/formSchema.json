@@ -1,6 +1,6 @@
 {
   "menuId": 16,
-  "postUrl": "/service-sessions",
+  "postUrl": "/sale-headers",
   "buttonName": "Service Sessions",
   "sheetTitle": "New Service Session",
   "sheetDescription": "",
