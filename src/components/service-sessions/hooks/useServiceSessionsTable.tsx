@@ -12,14 +12,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import getData from "@/API/getData.api";
+import getData from "@/api/getData.api";
 import { useEffect, useState } from "react";
-import deleteDataAPI from "@/API/deleteData.api";
+import deleteDataAPI from "@/api/deleteData.api";
 import toast from "react-hot-toast";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
-import updateData from "@/API/updateData.api";
+import updateData from "@/api/updateData.api";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
-import getDataById from "@/API/getDataById.api";
+import getDataById from "@/api/getDataById.api";
 
 // Type defination for columns header
 export type ColumnHeaderType = {
@@ -86,7 +86,7 @@ const useServiceSessionsTable = () => {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-         Customer
+          Customer
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -148,14 +148,14 @@ const useServiceSessionsTable = () => {
     setSheetOpen,
     resetFormData,
     setResetFormData,
-    footerData,
+    // footerData,
     setFooterData,
   } = useFetchDataContext();
   //API for table data
   const fetchTableData = async () => {
     try {
       setLoading(true);
-      let response: any = await getData("/sale-headers", {
+      const response: any = await getData("/sale-headers", {
         relations: [
           {
             name: "customer",
@@ -258,7 +258,6 @@ const useServiceSessionsTable = () => {
   const handleEditSubmit = async (data: any) => {
     // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
     const payload = PayloadModify(dynamicFormSchema, data);
-    console.log(payload);
     try {
       setEditButtonLoader(true);
       const response = await updateData(
@@ -290,6 +289,7 @@ const useServiceSessionsTable = () => {
     handleAgreeDelete,
     dataEditModeData,
     handleEditSubmit,
+    editButtonLoader,
   };
 };
 

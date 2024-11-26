@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // src/api/apiClient.ts
 import { BASE_URL } from "./constant/constant";
 import axios, {
@@ -9,7 +10,9 @@ const handleLogout = async () => {
   try {
     localStorage.clear();
     window.location.href = "/";
-  } catch (error) {}
+  } catch (error) {
+    console.log("error :", error);
+  }
 };
 // Create an Axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -55,7 +58,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     // Handle errors globally
     if (error.response?.status === 440) {
-      const { response, config } = error;
+      const { config } = error;
       if (config.rd_state) {
         config.rd_state++;
       } else {
@@ -70,7 +73,7 @@ apiClient.interceptors.response.use(
       await apiClient.post(
         "/users/new-access-token",
         { token: localStorage.getItem("r_token") },
-        // @ts-ignore
+        // @ts-expect-error
         { rd_state: config.rd_state }
       );
       return apiClient(config);

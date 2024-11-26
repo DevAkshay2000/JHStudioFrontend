@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
-import getData from "@/API/getData.api";
+import getData from "@/api/getData.api";
 import { TabTable } from "../TabTable";
 import { footerDataInterface } from "@/components/service-sessions/types";
 import Autocomplete from "../Combobox";
@@ -46,7 +47,7 @@ type FieldSchema = {
 };
 
 // JSON file schema
-type SampleSchema = {
+interface SampleSchema {
   menuId: number;
   buttonName?: string;
   sheetTitle?: string;

@@ -60,6 +60,8 @@ function ServiceSessionsTable() {
           {/* Div for side short form */}
           <div className="mb-5 flex justify-end">
             <SideSheetTransaction
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               formGenSchema={dynamicFormSchema}
               onSubmit={handleSubmit}
               buttonLoader={buttonLoader}

@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import SearchBoxTable from "../SearchBox";
 import { Dialog, DialogContent } from "../../dialog";
-import { SearchIcon } from "lucide-react";
 import { FaSearchPlus } from "react-icons/fa";
 import {
   footerDataInterface,
   SaleTabInterface,
-} from "@/components/Service-Sessions/types";
+} from "@/components/service-sessions/types";
 
 // JSON file schema
 type TabTableInterface = {
@@ -78,8 +79,8 @@ export function TabTable({
             </button>
           </div>
           <span className="text-sm text-blue-700">
-              Click on the search box to select item
-            </span>
+            Click on the search box to select item
+          </span>
           {/* Remove Selected Items Button */}
           <button
             onClick={() => {
@@ -139,7 +140,7 @@ export function TabTable({
             </tr>
           </thead>
           <tbody>
-            {items.map((item: SaleTabInterface, index: number) => (
+            {items.map((item: SaleTabInterface, _index: number) => (
               <Form
                 toggleSelectItem={toggleSelectItem}
                 item={item}
@@ -273,7 +274,7 @@ function Form({
             className="border rounded p-1 w-full text-sm text-center focus:ring-blue-500 focus:border-blue-500"
           />
         </td>
-        {0 ? (
+        {/* {0 ? (
           <td className="p-2">
             <input
               type="number"
@@ -286,7 +287,7 @@ function Form({
           </td>
         ) : (
           ""
-        )}
+        )} */}
         <td className="p-2 text-sm font-medium">{Number(rowData.amount)}</td>
       </tr>
     </>
