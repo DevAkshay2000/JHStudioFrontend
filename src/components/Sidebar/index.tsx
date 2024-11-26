@@ -15,7 +15,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 // import { MdAdminPanelSettings } from "react-icons/md";
-import { MdDashboard } from "react-icons/md";
+// import { MdDashboard } from "react-icons/md";
 // import { GrServices } from "react-icons/gr";
 import {
   DropdownMenu,
@@ -83,7 +83,7 @@ export function AppSidebar() {
       {
         title: "Dashboard",
         url: "#",
-        icon: MdDashboard,
+        // icon: MdDashboard,
         subItems: [{ title: "Sale Insights", url: `${AppRoutes.DASHBOARD}` }],
       },
       ...menuRoutes,
@@ -116,7 +116,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {mainMenuItems.map((menu, index) => (
-                <div key={index} className="group/collapsible">
+                <div key={index} className="group/collapsible font-serif">
                   <SidebarMenuItem className="text-slate-950">
                     <SidebarMenuButton onClick={() => toggleMenu(index)}>
                       {menu.icon && <menu.icon size={25} />}
