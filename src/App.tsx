@@ -1,11 +1,11 @@
 import "./App.css";
 import "./global.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/Sidebar";
+import { AppSidebar } from "@/components/sidebar";
 import RoutingFile from "./Routes";
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 import { BrowserRouter as Router } from "react-router-dom";
-import LoginPage from "./components/auth/Login";
+import LoginPage from "./components/auth/login";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (

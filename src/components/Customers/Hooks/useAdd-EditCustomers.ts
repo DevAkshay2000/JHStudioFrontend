@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import postData from "@/API/postData.api";
+import postData from "@/api/postData.api";
 import dynamicFormSchema from "../formSchema.json";
 import { useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";

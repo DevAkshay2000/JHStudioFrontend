@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import getData from "@/API/getData.api";
 import { useEffect, useState } from "react";
-import deleteDataAPI from "@/API/deleteData.api";
+import deleteDataAPI from "@/api/deleteData.api";
 import toast from "react-hot-toast";
 import { useFetchDataContext } from "../../context/fetchTableDataContext";
-import getDataById from "@/API/getDataById.api";
-import updateData from "@/API/updateData.api";
+import getDataById from "@/api/getDataById.api";
+import updateData from "@/api/updateData.api";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 
 // Type defination for columns header

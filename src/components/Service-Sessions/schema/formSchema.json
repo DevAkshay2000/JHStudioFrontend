@@ -12,9 +12,7 @@
       "required": false,
       "disabled": true,
       "error": "Code field is required",
-      "validations": [
-
-      ]
+      "validations": []
     },
     {
       "label": "Billing Date",

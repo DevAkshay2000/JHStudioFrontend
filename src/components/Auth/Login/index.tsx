@@ -85,7 +85,10 @@ const LoginPage = () => {
           <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}>
             {/* Username Input */}
             <div className="grid gap-1.5">
-              <Label htmlFor="username" className="text-gray-700 font-serif text-slate-950">
+              <Label
+                htmlFor="username"
+                className="text-gray-700 font-serif text-slate-950"
+              >
                 User Name
               </Label>
               <div className="flex items-center border border-gray-300 rounded-md p-2">
@@ -110,7 +113,10 @@ const LoginPage = () => {
             )}
             {/* Password Input */}
             <div className="grid gap-1.5">
-              <Label htmlFor="password" className="text-gray-700 font-serif text-slate-950">
+              <Label
+                htmlFor="password"
+                className="text-gray-700 font-serif text-slate-950"
+              >
                 Password
               </Label>
               <div className="flex items-center border border-gray-300 rounded-md p-2">

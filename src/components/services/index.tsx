@@ -2,8 +2,8 @@
 import { DataTable } from "../ui/sharedComponents/DataTable";
 import { SideSheet } from "../ui/sharedComponents/SideSheet";
 // import hook
-import useServiceTable from "./Hooks/useServicesTable";
-import useAddEditServices from "./Hooks/useAdd-EditServices";
+import useServiceTable from "./hooks/useServicesTable";
+import useAddEditServices from "./hooks/useAdd-EditServices";
 import ReactLoader from "../../components/ui/sharedComponents/ReactLoader";
 import AlertBox from "../ui/sharedComponents/AlertBox";
 // Import toaster for success or error msg popup

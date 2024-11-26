@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import postData from "@/API/postData.api";
+import postData from "@/api/postData.api";
 import dynamicFormSchema from "../schema/formSchema.json";
 import { useEffect, useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
 import getData from "@/API/getData.api";
-import { footerDataInterface, SaleTabInterface } from "../types";
+import { SaleTabInterface } from "../types";
 import { useAppSelector } from "@/store/hook";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
-import getDataById from "@/API/getDataById.api";
-import updateData from "@/API/updateData.api";
+import getDataById from "@/api/getDataById.api";
+import updateData from "@/api/updateData.api";
 
 const useAddEditServiceSessions = () => {
   const { userData }: any = useAppSelector((state) => state?.userData);
@@ -19,7 +20,7 @@ const useAddEditServiceSessions = () => {
     isRefresh,
     setIsRefresh,
     selectedRecordId,
-    setSelectedRecordId,
+    // setSelectedRecordId,
     sheetOpen,
     setSheetOpen,
     resetFormData,
@@ -27,7 +28,6 @@ const useAddEditServiceSessions = () => {
     footerData,
     setFooterData,
   } = useFetchDataContext();
-  console.log("setSelectedRecordIdsssss", selectedRecordId);
   //**************Item details tab *********************************************
   const [selectedData, setSelectedData] = useState<SaleTabInterface[]>([]);
   // const [footerData, setFooterData] = useState<footerDataInterface>({
@@ -204,7 +204,6 @@ const useAddEditServiceSessions = () => {
         }
       );
       setSelectedData(filterData);
-      // console.log("response123455", response.data);
     };
     if (selectedRecordId) {
       try {
@@ -232,7 +231,6 @@ const useAddEditServiceSessions = () => {
         }
       });
       let response = null;
-      console.log("selectedRecordId", selectedRecordId);
       if (selectedRecordId) {
         response = await updateData(
           dynamicFormSchema.postUrl,

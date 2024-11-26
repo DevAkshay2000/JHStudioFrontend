@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Approutes from "./AppRoutes";
-import CustomerComponent from "./components/Customers";
-import Dashboard from "./components/Dashboard";
-import Products from "./components/Products";
-import ServiceSessions from "./components/Service-Sessions";
-import Services from "./components/serviceMaster";
+import CustomerComponent from "./components/customers";
+import Dashboard from "./components/dashboard";
+import Products from "./components/products";
+import ServiceSessions from "./components/service-sessions";
+import Services from "./components/services";
 // import LoginPage from "./components/Auth/Login";
 
 function AppRouter() {
