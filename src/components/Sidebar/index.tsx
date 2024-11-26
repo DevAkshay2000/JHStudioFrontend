@@ -139,22 +139,22 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Footer content */}
-        <SidebarFooter className="mt-auto">
+        <SidebarFooter className="mt-auto pb-4 border-t border-b border-slate-200">
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
                     <User2 className="text-slate-950" />{" "}
-                    <span className="text-slate-950 text-base">
+                    <span className="text-slate-950 text-sm font-serif uppercase">
                       {" "}
                       Logged-In -:{" "}
-                      <span
-                        className="text-bold  text-base"
-                        style={{ color: "var(--color-primary)" }}
-                      >
-                        {userData.userName}
-                      </span>
+                    </span>
+                    <span
+                      className="text-bold text-slate-950 text-base font-serif"
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      {userData.userName}
                     </span>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
@@ -165,7 +165,7 @@ export function AppSidebar() {
                 >
                   <DropdownMenuItem>
                     <span
-                      className="flex items-center justify-end"
+                      className="flex items-center justify-end font-serif hover:cursor-pointer mb-6"
                       onClick={handleLogout}
                     >
                       <FiLogOut className="mr-2" />

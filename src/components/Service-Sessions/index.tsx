@@ -50,7 +50,12 @@ function ServiceSessionsTable() {
         <div className="grid gap-4 grid-cols-2 px-2">
           <ReactLoader loading={loading} />
           <div>
-            <p className="mb-5 text-lg font-bold uppercase">Service Session</p>
+            <p
+              className="mb-5 text-lg font-normal uppercase"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Service Session
+            </p>
           </div>
           {/* Div for side short form */}
           <div className="mb-5 flex justify-end">

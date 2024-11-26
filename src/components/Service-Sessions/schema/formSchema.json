@@ -17,21 +17,12 @@
       ]
     },
     {
-      "label": "Txn Date",
+      "label": "Billing Date",
       "name": "txnDate",
       "type": "date",
       "required": true,
-      "error": "TxnDate field is required",
-      "validations": [
-        {
-          "min": 3,
-          "message": "Should have min 3 characters"
-        },
-        {
-          "max": 100,
-          "message": "Should not have more than 100 characters"
-        }
-      ]
+      "error": "Billing Date is required",
+      "validations": []
     },
     {
       "label": "Customer",

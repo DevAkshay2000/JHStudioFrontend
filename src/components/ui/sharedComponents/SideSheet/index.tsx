@@ -209,7 +209,7 @@ export function SideSheet({
                 style={{ marginBottom: "1rem" }}
               >
                 {field.type !== "checkbox" ? (
-                  <Label htmlFor={field?.name} className="text-left">
+                  <Label htmlFor={field?.name} className="text-left font-serif">
                     {field.label}
                   </Label>
                 ) : null}
@@ -225,7 +225,7 @@ export function SideSheet({
                       return (
                         <select
                           {...controllerField}
-                          className="p-2 border border-gray-300 rounded w-full"
+                          className="p-2 border border-gray-300 rounded w-full font-serif h-9.5 text-sm"
                           onChange={(e) => {
                             controllerField.onChange(e);
                             if (e.target.name === "tax") {
@@ -254,7 +254,10 @@ export function SideSheet({
                     } else if (field.type === "checkbox") {
                       return (
                         <div className="flex items-center space-x-2">
-                          <Label htmlFor={field.name} className="text-left">
+                          <Label
+                            htmlFor={field.name}
+                            className="text-left font-serif"
+                          >
                             {field.label}
                           </Label>
                           <Switch
@@ -309,7 +312,7 @@ export function SideSheet({
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full"
+                  className="w-full font-serif"
                 >
                   {editButtonLoader ? "Updating..." : "Update"}
                 </Button>
@@ -319,7 +322,7 @@ export function SideSheet({
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full"
+                  className="w-full font-serif"
                 >
                   {buttonLoader ? "Submitting..." : "Submit"}
                 </Button>

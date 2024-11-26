@@ -73,19 +73,19 @@ const LoginPage = () => {
         {/* Right Section with Login Form */}
         <div className="flex flex-col justify-center p-6 md:p-8 bg-white w-full md:w-1/2 rounded-r-lg">
           <h1
-            className="font-serif text-center text-2xl font-semibold mb-2"
+            className="font-serif text-center text-xl font-semibold mb-2 uppercase"
             style={{ color: "#4B0082" }}
           >
             Sign In
           </h1>
-          <p className="text-xs md:text-sm text-center mb-6">
-            (Use your credentials to sign-in to the system)
+          <p className="text-xs md:text-xs text-center mb-6 font-sans uppercase">
+            (Use your credentials to sign in to the system)
           </p>
 
           <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}>
             {/* Username Input */}
             <div className="grid gap-1.5">
-              <Label htmlFor="username" className="text-gray-700">
+              <Label htmlFor="username" className="text-gray-700 font-serif text-slate-950">
                 User Name
               </Label>
               <div className="flex items-center border border-gray-300 rounded-md p-2">
@@ -110,7 +110,7 @@ const LoginPage = () => {
             )}
             {/* Password Input */}
             <div className="grid gap-1.5">
-              <Label htmlFor="password" className="text-gray-700">
+              <Label htmlFor="password" className="text-gray-700 font-serif text-slate-950">
                 Password
               </Label>
               <div className="flex items-center border border-gray-300 rounded-md p-2">
@@ -153,7 +153,7 @@ const LoginPage = () => {
             {/* Login Button */}
             <Button
               type="submit"
-              className="w-full text-white py-6 rounded-md hover:bg-gray-600"
+              className="w-full text-white py-6 rounded-md hover:bg-gray-600 font-mono"
               style={{ backgroundColor: "#4B0082" }}
               size="lg"
               disabled={buttonDisable}

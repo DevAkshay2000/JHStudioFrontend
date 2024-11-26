@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import SearchBoxTable from "../SearchBox";
 import { Dialog, DialogContent } from "../../dialog";
 import { SearchIcon } from "lucide-react";
+import { FaSearchPlus } from "react-icons/fa";
 import {
   footerDataInterface,
   SaleTabInterface,
@@ -55,34 +57,37 @@ export function TabTable({
   };
   return (
     <>
-      <div className="p-4 space-y-2">
+      <div className="pr-4 mb-4 mt-8 space-y-2">
         {/* Search Input and Icon */}
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={searchText}
-            placeholder="Recently searched item"
-            className="border rounded p-1 text-xs w-48 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <button
-            onClick={() => {
-              setOpen(true);
-            }}
-            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
-          >
-            <SearchIcon />
-          </button>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={searchText}
+              placeholder="Recently searched item"
+              className="border rounded p-1 text-xs w-60 h-9 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button
+              onClick={() => {
+                setOpen(true);
+              }}
+              style={{ backgroundColor: "var(--color-primary)" }}
+              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
+            >
+              <FaSearchPlus size={18} />
+            </button>
+          </div>
           <span className="text-sm text-blue-700">
-            click on the search box to select item
-          </span>
-          {/* Buttons */}
+              Click on the search box to select item
+            </span>
+          {/* Remove Selected Items Button */}
           <button
             onClick={() => {
               removeSelectedItems(selectedItems);
             }}
-            className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+            className="px-3 py-1 h-8 bg-red-500 text-white text-sm rounded hover:bg-red-600"
           >
-            Remove Selected Items
+            Remove Selected Item
           </button>
         </div>
       </div>
@@ -110,25 +115,25 @@ export function TabTable({
         <table className="min-w-full bg-white">
           <thead className="bg-gray-50 border-b">
             <tr>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Select
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Item Name
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Price (₹)
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Tax %
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Tax Amount
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Discount Amount
               </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500">
+              <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Amount (₹)
               </th>
             </tr>
@@ -148,7 +153,7 @@ export function TabTable({
       </div>
 
       {/* Summary Section */}
-      <div className="mt-4 p-3 bg-white rounded-lg shadow-md text-right border">
+      <div className="mt-4 p-3 bg-white rounded-lg shadow-md text-right border font-serif">
         <p className="text-sm">
           Subtotal: <span className="font-medium">₹{footerData.subtotal}</span>
         </p>
@@ -259,11 +264,12 @@ function Form({
         </td>
         <td className="p-2">
           <input
-            type="number"
+            type="text"
             value={rowData.discountAmount}
             onChange={(e) =>
               handleDiscountChange(item, parseFloat(e.target.value), item.id)
             }
+            style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
             className="border rounded p-1 w-full text-sm text-center focus:ring-blue-500 focus:border-blue-500"
           />
         </td>

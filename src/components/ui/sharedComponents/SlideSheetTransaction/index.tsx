@@ -22,7 +22,7 @@ import getData from "@/API/getData.api";
 import { TabTable } from "../TabTable";
 import { footerDataInterface } from "@/components/Service-Sessions/types";
 import Autocomplete from "../Combobox";
-import { SquarePlusIcon } from "lucide-react";
+import { RiAddLine } from "react-icons/ri";
 import { menuSchemaHandlerMap } from "@/Mappings";
 import { ModalForm } from "../ModalForm";
 import { Dialog, DialogContent } from "../../dialog";
@@ -84,15 +84,13 @@ export function SideSheetTransaction({
   selectNewItem,
   selectedData,
   removeSelectedItems,
-
   // onEditSubmit,
-
-  editButtonLoader,
+  // editButtonLoader,
   editModeData,
 }: SideSheetProps): JSX.Element {
   // Zod validation schema based on field validations
   const [schema, setSchema] = useState<any>({});
-  const [handler, sethandler] = useState<Function>(() => {});
+  // const [handler, sethandler] = useState<Function>(() => {});
   const [modalOpen, setModalOpen] = useState<any>(false);
   const [nquery, setNQuery] = useState(""); // Search input query
   const [modalKey, setModalKey] = useState("");
@@ -127,14 +125,14 @@ export function SideSheetTransaction({
     }, {} as Record<string, z.ZodType<any>>)
   );
   const {
-    isRefresh,
-    setIsRefresh,
+    // isRefresh,
+    // setIsRefresh,
     selectedRecordId,
-    setSelectedRecordId,
+    // setSelectedRecordId,
     sheetOpen,
     setSheetOpen,
     resetFormData,
-    setResetFormData,
+    // setResetFormData,
     footerData,
     setFooterData,
   } = useFetchDataContext();
@@ -227,7 +225,10 @@ export function SideSheetTransaction({
     <div>
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline">
+          <Button
+            variant="outline"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
             <FaPlus /> Add New {formGenSchema?.buttonName}
           </Button>
         </SheetTrigger>
@@ -237,7 +238,7 @@ export function SideSheetTransaction({
         >
           <SheetHeader>
             <div className="d-flex row">
-              <div className="grid col-span-2 w-1/4 float-right m-3">
+              <div className="grid col-span-2 w-1/4 float-right mr-5">
                 <Button
                   form="hook-form"
                   type="submit"
@@ -248,14 +249,16 @@ export function SideSheetTransaction({
                 </Button>
               </div>
               <div className="w-1/3">
-                <SheetTitle>{formGenSchema?.sheetTitle}</SheetTitle>
+                <SheetTitle style={{ fontFamily: "'Playfair Display', serif" }}>
+                  {formGenSchema?.sheetTitle}
+                </SheetTitle>
                 <SheetDescription>
                   {formGenSchema?.sheetDescription}
                 </SheetDescription>
               </div>
             </div>
           </SheetHeader>
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-2 gap-4 mt-4 mb-4">
             <form
               id="hook-form"
               onSubmit={handleSubmit(onSubmit)}
@@ -265,10 +268,12 @@ export function SideSheetTransaction({
                 <div
                   className="grid grid-rows-1 gap-2"
                   key={field?.name}
-                  style={{ marginBottom: "1rem" }}
                 >
                   {field.type !== "checkbox" ? (
-                    <Label htmlFor={field?.name} className="text-left">
+                    <Label
+                      htmlFor={field?.name}
+                      className="text-left font-serif"
+                    >
                       {field.label}
                     </Label>
                   ) : null}
@@ -286,7 +291,7 @@ export function SideSheetTransaction({
                         return (
                           <select
                             {...controllerField}
-                            className="p-2 border border-gray-300 rounded w-full"
+                            className="p-2 border border-gray-300 rounded w-full font-serif h-9 text-sm"
                           >
                             <option value="">-- Select an option --</option>
                             {(dropdownOptions[field.name] || []).map(
@@ -301,7 +306,10 @@ export function SideSheetTransaction({
                       } else if (field.type === "checkbox") {
                         return (
                           <div className="flex items-center space-x-2">
-                            <Label htmlFor={field.name} className="text-left">
+                            <Label
+                              htmlFor={field.name}
+                              className="text-left font-serif"
+                            >
                               {field.label}
                             </Label>
                             <Switch
@@ -316,7 +324,7 @@ export function SideSheetTransaction({
                         return <Input type="date" {...controllerField} />;
                       } else if (field.type === "autoComplete") {
                         return (
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 h-8.5">
                             <Autocomplete
                               api={`${field.optionsAPI}`}
                               onChange={(e: number) => {
@@ -335,9 +343,12 @@ export function SideSheetTransaction({
                                 setModalKey(field.name);
                               }}
                               type="button"
-                              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
+                              className="p-1.5 text-white rounded focus:ring-2 focus:ring-blue-300"
+                              style={{
+                                backgroundColor: "var(--color-primary)",
+                              }}
                             >
-                              <SquarePlusIcon />
+                              <RiAddLine style={{color: "white "}}/>
                             </button>
                           </div>
                         );
@@ -362,6 +373,7 @@ export function SideSheetTransaction({
               ))}
             </form>
           </div>
+          <hr />
           {/* add tab here */}
           <TabTable
             items={selectedData}
