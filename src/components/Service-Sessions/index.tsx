@@ -6,8 +6,8 @@ import ReactLoader from "../../components/ui/sharedComponents/ReactLoader";
 import AlertBox from "../ui/sharedComponents/AlertBox";
 // Import toaster for success or error msg popup
 import { Toaster } from "react-hot-toast";
-import useServiceSessionsTable from "./hooks/useServiceSessionsTable";
-import useAddEditServiceSessions from "./hooks/useAdd-EditServiceSessions";
+import useServiceSessionsTable from "./Hooks/useServiceSessionsTable";
+import useAddEditServiceSessions from "./Hooks/useAdd-EditServiceSessions";
 import { SideSheetTransaction } from "../ui/sharedComponents/SlideSheetTransaction";
 import tabSchema from "./schema/tabSchema.json";
 

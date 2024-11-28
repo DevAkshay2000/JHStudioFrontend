@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
+  DropdownMenuLabel, 
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -51,7 +51,7 @@ const useServiceSessionsTable = () => {
   const [dataEditModeData, setEditModaData] = useState([]);
   //Column  const [dataEditModeData, setEditModaData] = useState([]);
   const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
-
+console.log(editButtonLoader)
   const columns: ColumnDef<ColumnHeaderType>[] = [
     {
       accessorKey: "code",

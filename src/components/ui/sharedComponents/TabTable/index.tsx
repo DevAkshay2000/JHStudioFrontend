@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
@@ -140,7 +139,7 @@ export function TabTable({
             </tr>
           </thead>
           <tbody>
-            {items.map((item: SaleTabInterface, _index: number) => (
+            {items.map((item: SaleTabInterface) => (
               <Form
                 toggleSelectItem={toggleSelectItem}
                 item={item}

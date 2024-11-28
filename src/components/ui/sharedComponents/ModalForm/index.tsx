@@ -180,9 +180,10 @@ export function ModalForm({
                       api={`${field.optionsAPI}`}
                       onChange={(e: number) => {
                         controllerField.onChange(e);
-                      } }
-                      className="" 
-                      nquery={""}                    />
+                      }}
+                      className=""
+                      nquery=""
+                    />
                   );
                 } else {
                   return (

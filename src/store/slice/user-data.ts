@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getData from "../../api/getData.api";
+import getData from "@/api/getData.api";
 
 type UserData = {
   userId: number;

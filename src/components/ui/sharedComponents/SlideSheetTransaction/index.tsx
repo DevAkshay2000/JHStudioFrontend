@@ -21,10 +21,10 @@ import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
 import getData from "@/api/getData.api";
 import { TabTable } from "../TabTable";
-import { footerDataInterface } from "@/components/service-sessions/types";
+import { footerDataInterface } from "@/components/Service-Sessions/types";
 import Autocomplete from "../Combobox";
 import { RiAddLine } from "react-icons/ri";
-import { menuSchemaHandlerMap } from "@/mappings";
+import { menuSchemaHandlerMap } from "@/Mappings";
 import { ModalForm } from "../ModalForm";
 import { Dialog, DialogContent } from "../../dialog";
 import PayloadModify from "../Utility/PayloadModify";
@@ -42,8 +42,8 @@ type FieldSchema = {
   validations: { min?: number; max?: number; message?: string }[];
   defaultValue?: boolean;
   optionsAPI?: string;
-  targetMenuId: number;
-  disabled: boolean;
+  targetMenuId?: any;
+  disabled?: boolean;
 };
 
 // JSON file schema
@@ -65,12 +65,12 @@ interface SideSheetProps {
   searchBoxData: any[];
   selectNewItem: Function;
   selectedData: any[];
-  footerData: footerDataInterface;
-  setFooterData: any;
+  footerData?: footerDataInterface;
+  setFooterData?: any;
   removeSelectedItems: Function;
   // onEditSubmit: any;
 
-  editButtonLoader: any;
+  editButtonLoader?: any;
   editModeData: any;
 }
 
@@ -265,7 +265,7 @@ export function SideSheetTransaction({
               onSubmit={handleSubmit(onSubmit)}
               className="col-span-2 grid grid-cols-3 gap-4 mt-5"
             >
-              {formGenSchema.fields.map((field) => (
+              {formGenSchema.fields.map((field:FieldSchema) => (
                 <div
                   className="grid grid-rows-1 gap-2"
                   key={field?.name}
