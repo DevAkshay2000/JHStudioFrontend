@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getData from "../../API/getData.api";
+import getData from "@/api/getData.api";;
 
 type MenuRouteType = {
   [key: string]:

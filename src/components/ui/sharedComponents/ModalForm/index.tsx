@@ -2,20 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FaPlus } from "react-icons/fa6";
 // React hook forms
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
 import getData from "@/api/getData.api";
@@ -51,8 +43,7 @@ interface SideSheetProps {
 export function ModalForm({
   formGenSchema,
   onSubmit,
-  buttonLoader,
-  maxWidth,
+  buttonLoader
 }: SideSheetProps): JSX.Element {
   // Zod validation schema based on field validations
   const validationSchema = z.object(
@@ -192,6 +183,7 @@ export function ModalForm({
                         controllerField.onChange(e);
                       }}
                       className=""
+                      nquery=""
                     />
                   );
                 } else {

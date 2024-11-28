@@ -8,18 +8,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
+  DropdownMenuLabel, 
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import getData from "@/API/getData.api";
+import getData from "@/api/getData.api";
 import { useEffect, useState } from "react";
-import deleteDataAPI from "@/API/deleteData.api";
+import deleteDataAPI from "@/api/deleteData.api";
 import toast from "react-hot-toast";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
-import updateData from "@/API/updateData.api";
+import updateData from "@/api/updateData.api";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
-import getDataById from "@/API/getDataById.api";
+import getDataById from "@/api/getDataById.api";
 
 // Type defination for columns header
 export type ColumnHeaderType = {
@@ -51,7 +51,7 @@ const useServiceSessionsTable = () => {
   const [dataEditModeData, setEditModaData] = useState([]);
   //Column  const [dataEditModeData, setEditModaData] = useState([]);
   const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
-
+console.log(editButtonLoader)
   const columns: ColumnDef<ColumnHeaderType>[] = [
     {
       accessorKey: "code",
@@ -148,7 +148,6 @@ const useServiceSessionsTable = () => {
     setSheetOpen,
     resetFormData,
     setResetFormData,
-    footerData,
     setFooterData,
   } = useFetchDataContext();
   //API for table data

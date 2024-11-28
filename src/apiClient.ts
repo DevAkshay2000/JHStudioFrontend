@@ -55,7 +55,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     // Handle errors globally
     if (error.response?.status === 440) {
-      const { response, config } = error;
+      const { config } = error;
       if (config.rd_state) {
         config.rd_state++;
       } else {

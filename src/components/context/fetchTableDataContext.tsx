@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, ReactNode, useContext, useState } from "react";
-import { footerDataInterface } from "../service-sessions/types";
+import { footerDataInterface } from "../Service-Sessions/types";
 
 const FetchDataContext = createContext<any>(null);
 

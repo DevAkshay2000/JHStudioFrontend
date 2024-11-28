@@ -5,7 +5,7 @@ import dynamicFormSchema from "../schema/formSchema.json";
 import { useEffect, useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
-import getData from "@/API/getData.api";
+import getData from "@/api/getData.api";
 import { SaleTabInterface } from "../types";
 import { useAppSelector } from "@/store/hook";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";

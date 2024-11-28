@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
-import getData from "@/API/getData.api";
+import getData from "@/api/getData.api";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
 
 // Form Fields schema

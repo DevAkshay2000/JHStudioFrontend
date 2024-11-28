@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import SearchBoxTable from "../SearchBox";
 import { Dialog, DialogContent } from "../../dialog";
-import { SearchIcon } from "lucide-react";
 import { FaSearchPlus } from "react-icons/fa";
 import {
   footerDataInterface,
@@ -139,7 +138,7 @@ export function TabTable({
             </tr>
           </thead>
           <tbody>
-            {items.map((item: SaleTabInterface, index: number) => (
+            {items.map((item: SaleTabInterface) => (
               <Form
                 toggleSelectItem={toggleSelectItem}
                 item={item}
