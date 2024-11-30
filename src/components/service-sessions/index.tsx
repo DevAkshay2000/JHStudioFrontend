@@ -6,8 +6,8 @@ import ReactLoader from "../../components/ui/sharedComponents/ReactLoader";
 import AlertBox from "../ui/sharedComponents/AlertBox";
 // Import toaster for success or error msg popup
 import { Toaster } from "react-hot-toast";
-import useServiceSessionsTable from "./Hooks/useServiceSessionsTable";
-import useAddEditServiceSessions from "./Hooks/useAdd-EditServiceSessions";
+import useServiceSessionsTable from "@/components/service-sessions/hooks/useServiceSessionsTable";
+import useAddEditServiceSessions from "@/components/service-sessions/hooks/useAdd-EditServiceSessions";
 import { SideSheetTransaction } from "../ui/sharedComponents/SlideSheetTransaction";
 import tabSchema from "./schema/tabSchema.json";
 
@@ -60,8 +60,6 @@ function ServiceSessionsTable() {
           {/* Div for side short form */}
           <div className="mb-5 flex justify-end">
             <SideSheetTransaction
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-expect-error
               formGenSchema={dynamicFormSchema}
               onSubmit={handleSubmit}
               buttonLoader={buttonLoader}

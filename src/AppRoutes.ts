@@ -4,7 +4,8 @@ const appRoutes = {
   CUSTOMER: "/customers",
   PRODUCTS: "/products",
   SERVICES: "/services",
-  SERVICESESSIONS:"/service-sessions"
+  SERVICESESSIONS: "/service-sessions",
+  CUSTOMER_HISTORY: "/customer-history",
 };
 
 export default appRoutes;

@@ -6,14 +6,13 @@ import { useEffect, useState } from "react";
 import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 import toast from "react-hot-toast";
 import getData from "@/api/getData.api";
-import { SaleTabInterface } from "../types";
-import { useAppSelector } from "@/store/hook";
+import { SaleTabInterface } from "@/components/service-sessions/types";
+// import { useAppSelector } from "@/store/hook";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
 import getDataById from "@/api/getDataById.api";
 import updateData from "@/api/updateData.api";
 
 const useAddEditServiceSessions = () => {
-  const { userData }: any = useAppSelector((state) => state?.userData);
   // state for button loadewr
   const [buttonLoader, setButtonLoader] = useState<boolean>(false);
   const {
@@ -181,7 +180,7 @@ const useAddEditServiceSessions = () => {
         selectedRecordId,
         apiFilter
       );
-      console.log("response123455", response?.data?.saleLines);
+
       const filterData = response?.data?.saleLines.map(
         (val: SaleTabInterface): SaleTabInterface => {
           return {
@@ -247,9 +246,9 @@ const useAddEditServiceSessions = () => {
                 footerData.totalTax -
                 footerData.totalDiscount,
               totalDiscount: footerData.totalDiscount,
-              user: {
-                id: userData.userId,
-              },
+              // user: {
+              //   id: userData.userId,
+              // },
             },
             saleLines: filterData,
           },
@@ -266,9 +265,9 @@ const useAddEditServiceSessions = () => {
               footerData.totalTax -
               footerData.totalDiscount,
             totalDiscount: footerData.totalDiscount,
-            user: {
-              id: userData.userId,
-            },
+            // user: {
+            //   id: userData.userId,
+            // },
           },
           saleLines: filterData,
         });

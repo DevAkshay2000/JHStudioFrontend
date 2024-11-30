@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel, 
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -51,7 +51,7 @@ const useServiceSessionsTable = () => {
   const [dataEditModeData, setEditModaData] = useState([]);
   //Column  const [dataEditModeData, setEditModaData] = useState([]);
   const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
-console.log(editButtonLoader)
+  console.log(editButtonLoader);
   const columns: ColumnDef<ColumnHeaderType>[] = [
     {
       accessorKey: "code",
@@ -120,15 +120,28 @@ console.log(editButtonLoader)
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleEditClick(Number(records.id))}
-              >
-                Edit Record
+              <DropdownMenuItem>
+                <Button
+                  onClick={() => handleEditClick(Number(records.id))}
+                  style={{
+                    background: "none",
+                    color: "red",
+                    border: "none",
+                    width: "100%",
+                  }}
+                >
+                  Edit Record
+                </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
                   onClick={() => handleDeleteClick(Number(records.id))}
-                  style={{ background: "none", color: "red", border: "none" }}
+                  style={{
+                    background: "none",
+                    color: "red",
+                    border: "none",
+                    width: "100%",
+                  }}
                 >
                   Delete Record
                 </Button>

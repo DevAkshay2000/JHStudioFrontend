@@ -120,7 +120,7 @@ export function ModalForm({
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      <div className=""> Adding new {formGenSchema?.buttonName}</div>
+      <div className="font-serif"> Add New {formGenSchema?.buttonName}</div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="col-span-2 grid grid-cols-2 gap-4 mt-5"
@@ -132,7 +132,7 @@ export function ModalForm({
             style={{ marginBottom: "1rem" }}
           >
             {field.type !== "checkbox" ? (
-              <Label htmlFor={field?.name} className="text-left">
+              <Label htmlFor={field?.name} className="text-left font-serif">
                 {field.label}
               </Label>
             ) : null}
@@ -148,7 +148,7 @@ export function ModalForm({
                   return (
                     <select
                       {...controllerField}
-                      className="p-2 border border-gray-300 rounded w-full"
+                      className="p-2 border border-gray-300 rounded w-full font-serif h-9.5 text-sm"
                     >
                       <option value="">-- Select an option --</option>
                       {(dropdownOptions[field.name] || []).map((option) => (
@@ -161,7 +161,7 @@ export function ModalForm({
                 } else if (field.type === "checkbox") {
                   return (
                     <div className="flex items-center space-x-2">
-                      <Label htmlFor={field.name} className="text-left">
+                      <Label htmlFor={field.name} className="text-left font-serif">
                         {field.label}
                       </Label>
                       <Switch
@@ -204,7 +204,7 @@ export function ModalForm({
           </div>
         ))}
         <div className="grid col-span-2 w-full">
-          <Button type="submit" disabled={isSubmitting} className="w-full">
+          <Button type="submit" disabled={isSubmitting} className="w-full font-serif">
             {buttonLoader ? "Submitting.." : "Submit"}
           </Button>
         </div>

@@ -91,7 +91,7 @@ export default function Autocomplete({
           type="text"
           value={query}
           onChange={handleInputChange}
-          placeholder="Search Customer..."
+          placeholder="Search Customer"
           className="w-full px-2 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition h-8"
         />
         {query && (

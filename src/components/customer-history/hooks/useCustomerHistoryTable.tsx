@@ -14,52 +14,44 @@ import {
 } from "@/components/ui/dropdown-menu";
 import getData from "@/api/getData.api";
 import { useEffect, useState } from "react";
-import deleteDataAPI from "@/api/deleteData.api";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { useFetchDataContext } from "../../context/fetchTableDataContext";
-import getDataById from "@/api/getDataById.api";
-import updateData from "@/api/updateData.api";
-import PayloadModify from "@/components/ui/sharedComponents/Utility/PayloadModify";
 
 // Type defination for columns header
 export type ColumnHeaderType = {
   id: string;
   status: "pending" | "processing" | "success" | "failed";
-  name: string;
-  taxAmount: number;
-  amount: number;
-  isInactive: number;
+  email: string;
+  name?: string;
+  mobile?: string;
   sortBy?: string;
 };
 
 //interface for Column Data
-interface ServicesData {
+interface CustomerData {
   id: string;
   name: string;
-  taxAmount: number;
-  amount: number;
+  mobile: number;
+  birthDate: string;
+  email: string;
   isInactive: number;
   createdDate: string;
   modifiedDate: string;
 }
 
-const useServicesTable = () => {
-  const [tableData, setTableData] = useState<ServicesData[]>([]);
+const useCustomerHistoryTable = () => {
+  const [tableData, setTableData] = useState<CustomerData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const {
     isRefresh,
-    setIsRefresh,
-    selectedRecordId,
+    // setIsRefresh,
+    // selectedRecordId,
     setSelectedRecordId,
     sheetOpen,
     setSheetOpen,
-    resetFormData,
-    setResetFormData,
   } = useFetchDataContext();
-  const [dataEditModeData, setEditModaData] = useState([]);
-  const [editButtonLoader, setEditButtonLoader] = useState<boolean>(false);
+  const [customerHistoryData, setCustomerHistoryData] = useState([]);
 
   //Column defination
   const columns: ColumnDef<ColumnHeaderType>[] = [
@@ -82,31 +74,65 @@ const useServicesTable = () => {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Service Name
+          Customer Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "amount",
+      accessorKey: "birthdateUpdated",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Service Charge
+          Date Of Birth
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
     },
     {
-      accessorKey: "taxAmount",
+      accessorKey: "mobile",
       header: ({ column }) => (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tax Amount
+          Mobile Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "lastVisitedDate",
+      accessorFn: function (row: any) {
+        const currentDate: any = new Date(); // Get the current date
+        const givenDate: any = new Date(row.lastVisitedDate); // Convert the input date
+      
+        // Calculate the difference in milliseconds
+        const differenceMs = Math.abs(currentDate - givenDate);
+      
+        // Convert milliseconds to days
+        return `${Math.floor(differenceMs / (1000 * 60 * 60 * 24))} days ago`;
+      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Visited
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -137,32 +163,19 @@ const useServicesTable = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>Action</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Button
-                  onClick={() => handleEditClick(Number(records.id))}
+                  onClick={() => handleViewHistoryClick(Number(records.id))}
                   style={{
                     background: "none",
-                    color: "red",
+                    color: "green",
                     border: "none",
                     width: "100%",
                   }}
                 >
-                  Edit Record
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button
-                  onClick={() => handleDeleteClick(Number(records.id))}
-                  style={{
-                    background: "none",
-                    color: "red",
-                    border: "none",
-                    width: "100%",
-                  }}
-                >
-                  Delete Record
+                  View History
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -202,63 +215,44 @@ const useServicesTable = () => {
     fetchTableData();
   }, [isRefresh]);
 
-  const handleDeleteClick = (id: number) => {
-    setShowAlert(true);
-    setSelectedDeleteId(id);
-  };
-
-  // Function to delete the record
-  const handleAgreeDelete = async () => {
-    if (selectedDeleteId) {
-      try {
-        await deleteDataAPI(dynamicFormSchema.postUrl, selectedDeleteId);
-        toast.success("Record deleted successfully");
-        setTimeout(() => {
-          fetchTableData(); // Calling function after successfully deleting record for updated table data
-        }, 1000);
-      } catch (err: any) {
-        if (err) {
-          toast.error("Failed to delete record!");
-        }
-      }
-    }
-  };
-
-  const handleEditClick = (recordId: number) => {
+  //Fetching customer history data
+  const handleViewHistoryClick = (recordId: number) => {
     if (recordId) {
       setSelectedRecordId(recordId);
       let response: any;
-      const fetchEdiData = async () => {
-        response = await getDataById(dynamicFormSchema.postUrl, recordId);
-        setEditModaData(response.data);
+      const fetchData = async () => {
+        const apiFilter = {
+          limit: 10,
+          // fields: {
+          //   id: true,
+          //   txnDate: true,
+          //   createdDate: true,
+          // },
+          relations: [
+            {
+              name: "customer",
+              where: {
+                id: recordId,
+              },
+            },
+            {
+              name: "saleLines",
+              relations: [
+                {
+                  name: "service",
+                },
+              ],
+            },
+            {
+              name: "user",
+            },
+          ],
+        };
+        response = await getData("/sale-headers", apiFilter);
+        setCustomerHistoryData(response.data);
       };
-      fetchEdiData();
+      fetchData();
       setSheetOpen(!sheetOpen);
-    }
-  };
-
-  //Handle Update function to update form records
-  const handleEditSubmit = async (data: any) => {
-    // Following utility will modify payload for isInactive and dropdown ids and add created and modifiedDate
-    const payload = PayloadModify(dynamicFormSchema, data);
-    try {
-      setEditButtonLoader(true);
-      const response = await updateData(
-        dynamicFormSchema.postUrl,
-        payload,
-        selectedRecordId
-      );
-      if (response) {
-        setSheetOpen(!sheetOpen);
-        setEditButtonLoader(false);
-        setIsRefresh(!isRefresh);
-        setResetFormData(!resetFormData);
-        toast.success("Record updated successfully..!");
-      }
-    } catch (err: any) {
-      setEditButtonLoader(false);
-      toast.error("Error while updating record..!");
-      console.log(err);
     }
   };
 
@@ -269,11 +263,8 @@ const useServicesTable = () => {
     loading,
     showAlert,
     setShowAlert,
-    handleAgreeDelete,
-    dataEditModeData,
-    handleEditSubmit,
-    editButtonLoader,
+    customerHistoryData,
   };
 };
 
-export default useServicesTable;
+export default useCustomerHistoryTable;

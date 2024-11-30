@@ -20,6 +20,7 @@ import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
 import getData from "@/api/getData.api";
 import { useFetchDataContext } from "@/components/context/fetchTableDataContext";
+import { Textarea } from "@/components/ui/textarea";
 
 // Form Fields schema
 type FieldSchema = {
@@ -181,7 +182,7 @@ export function SideSheet({
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          style={{ fontFamily: "'Playfair Display', serif", backgroundColor: "var(--color-primary)", color: "white" }}
         >
           <FaPlus /> Add New {formGenSchema?.buttonName}
         </Button>
@@ -270,6 +271,13 @@ export function SideSheet({
                       );
                     } else if (field.type === "date") {
                       return <Input type="date" {...controllerField} />;
+                    } else if (field.type === "textarea") {
+                      return (
+                        <Textarea
+                          placeholder="text here..."
+                          {...controllerField}
+                        />
+                      );
                     } else {
                       return (
                         <Input

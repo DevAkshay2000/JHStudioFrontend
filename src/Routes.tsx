@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Approutes from "./AppRoutes";
-import CustomerComponent from "./components/Customers";
-import Dashboard from "./components/Dashboard";
-import Products from "./components/Products";
-import ServiceSessions from "../src/components/Service-Sessions";
-import Services from "./components/services";
+import CustomerComponent from "@/components/customers";
+import Dashboard from "@/components/dashboard";
+import Products from "@/components/products";
+import ServiceSessions from "@/components/service-sessions";
+import Services from "@/components/services";
+import CustomerHistory from "@/components/customer-history";
 // import LoginPage from "./components/Auth/Login";
 
 function AppRouter() {
@@ -18,6 +19,7 @@ function AppRouter() {
       <Route path={Approutes.PRODUCTS} element={<Products />} />
       <Route path={Approutes.SERVICESESSIONS} element={<ServiceSessions />} />
       <Route path={Approutes.SERVICES} element={<Services />} />
+      <Route path={Approutes.CUSTOMER_HISTORY} element={<CustomerHistory />} />
     </Routes>
   );
 }

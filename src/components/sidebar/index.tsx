@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import { initStore } from "@/store/init-store";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { FiLogOut } from "react-icons/fi";
+import { ChevronDown } from "lucide-react";
 
 // Define the type for the menu items
 interface MenuItem {
@@ -118,9 +119,22 @@ export function AppSidebar() {
               {mainMenuItems.map((menu, index) => (
                 <div key={index} className="group/collapsible font-serif">
                   <SidebarMenuItem className="text-slate-950">
-                    <SidebarMenuButton onClick={() => toggleMenu(index)}>
-                      {menu.icon && <menu.icon size={25} />}
-                      <span>{menu.title}</span>
+                    <SidebarMenuButton
+                      onClick={() => toggleMenu(index)}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        {menu.icon && <menu.icon size={25} />}
+                        <span>{menu.title}</span>
+                      </div>
+                      <ChevronDown
+                        className={`transition-transform duration-300 ${
+                          openIndexes.includes(index)
+                            ? "rotate-180"
+                            : "rotate-0"
+                        }`}
+                        size={20}
+                      />
                     </SidebarMenuButton>
                     {openIndexes.includes(index) && (
                       <SidebarMenuSub>

@@ -24,7 +24,7 @@ import { TabTable } from "../TabTable";
 import { footerDataInterface } from "@/components/Service-Sessions/types";
 import Autocomplete from "../Combobox";
 import { RiAddLine } from "react-icons/ri";
-import { menuSchemaHandlerMap } from "@/Mappings";
+import { menuSchemaHandlerMap } from "@/mappings";
 import { ModalForm } from "../ModalForm";
 import { Dialog, DialogContent } from "../../dialog";
 import PayloadModify from "../Utility/PayloadModify";
@@ -244,7 +244,7 @@ export function SideSheetTransaction({
                   form="hook-form"
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full"
+                  className="w-full font-serif"
                 >
                   {buttonLoader ? "Submitting.." : "Submit"}
                 </Button>

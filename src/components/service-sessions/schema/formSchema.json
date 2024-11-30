@@ -41,6 +41,23 @@
       "required": true,
       "error": "Payment Type field is required",
       "validations": []
+    },
+    {
+      "label": "Artist",
+      "name": "user",
+      "type": "select",
+      "optionsAPI": "/users",
+      "required": true,
+      "error": "Artist field is required",
+      "validations": []
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "type": "textarea",
+      "required": false,
+      "error": "",
+      "validations": []
     }
   ]
 }

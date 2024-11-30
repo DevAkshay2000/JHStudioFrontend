@@ -77,7 +77,7 @@ export function TabTable({
               <FaSearchPlus size={18} />
             </button>
           </div>
-          <span className="text-sm text-blue-700">
+          <span className="text-sm text-blue-700 font-serif">
             Click on the search box to select item
           </span>
           {/* Remove Selected Items Button */}
@@ -85,7 +85,7 @@ export function TabTable({
             onClick={() => {
               removeSelectedItems(selectedItems);
             }}
-            className="px-3 py-1 h-8 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+            className="px-3 py-1 h-8 bg-red-500 text-white text-sm rounded hover:bg-red-600 font-serif"
           >
             Remove Selected Item
           </button>

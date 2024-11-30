@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataTable } from "../ui/sharedComponents/DataTable";
-import { SideSheet } from "../ui/sharedComponents/SideSheet";
+import { HistorySideSheet } from "@/components/ui/sharedComponents/HistorySideSheet";
 // import hook
-import useCustomerTable from "@/components/customers/hooks/useCustomerTable";
-import useAddEditCustomers from "@/components/customers/hooks/useAdd-EditCustomers";
+import useCustomerHistoryTable from "@/components/customer-history/hooks/useCustomerHistoryTable";
 import ReactLoader from "../../components/ui/sharedComponents/ReactLoader";
-import AlertBox from "../ui/sharedComponents/AlertBox";
 // Import toaster for success or error msg popup
 import { Toaster } from "react-hot-toast";
 // Importing context
@@ -14,27 +12,15 @@ import { FetchDataProvider } from "../context/fetchTableDataContext";
 export default function Customers(): JSX.Element {
   return (
     <FetchDataProvider>
-      <CustomersTable />
+      <CustomerHistoryTable />
     </FetchDataProvider>
   );
 }
 
-function CustomersTable(): JSX.Element {
+function CustomerHistoryTable(): JSX.Element {
   // Table hook
-  const {
-    columns,
-    data,
-    dynamicFormSchema,
-    loading,
-    showAlert,
-    setShowAlert,
-    handleAgreeDelete,
-    dataEditModeData,
-    handleEditSubmit,
-    editButtonLoader,
-  } = useCustomerTable();
-  // Add hook
-  const { handleCustomerAddSubmit, buttonLoader } = useAddEditCustomers();
+  const { columns, data, dynamicFormSchema, loading, customerHistoryData } =
+    useCustomerHistoryTable();
 
   return (
     <>
@@ -47,18 +33,14 @@ function CustomersTable(): JSX.Element {
               className="mb-5 text-lg font-normal uppercase"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Our Customers
+              Customer History
             </p>
           </div>
           {/* Div for side short form */}
           <div className="mb-5 flex justify-end">
-            <SideSheet
+            <HistorySideSheet
               formGenSchema={dynamicFormSchema}
-              onSubmit={handleCustomerAddSubmit}
-              buttonLoader={buttonLoader}
-              editButtonLoader={editButtonLoader}
-              editModeData={dataEditModeData as any}
-              onEditSubmit={handleEditSubmit as any}
+              customerHistoryData={customerHistoryData as any}
             />
           </div>
         </div>
@@ -67,17 +49,6 @@ function CustomersTable(): JSX.Element {
         <div className="row mt-2 pr-4">
           <DataTable columns={columns} data={data as any} />
         </div>
-
-        {/* Alert popup for delet action */}
-        {showAlert && (
-          <AlertBox
-            title="Delete Alert!!"
-            description="Are you sure to delete this record?"
-            onAgreeFn={handleAgreeDelete}
-            open={showAlert}
-            setOpen={setShowAlert}
-          />
-        )}
       </div>
     </>
   );
