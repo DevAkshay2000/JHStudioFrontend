@@ -1,7 +1,7 @@
 {
   "menuId": 16,
   "postUrl": "/sale-headers",
-  "buttonName": "Service Sessions",
+  "buttonName": "Service Session",
   "sheetTitle": "New Service Session",
   "sheetDescription": "",
   "fields": [

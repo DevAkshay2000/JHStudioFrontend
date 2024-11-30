@@ -53,7 +53,7 @@ interface SampleSchema {
   sheetTitle?: string;
   sheetDescription?: string;
   fields: FieldSchema[];
-};
+}
 interface SideSheetProps {
   formGenSchema: SampleSchema;
   onSubmit: () => void;
@@ -228,7 +228,11 @@ export function SideSheetTransaction({
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              backgroundColor: "var(--color-primary)",
+              color: "white",
+            }}
           >
             <FaPlus /> Add New {formGenSchema?.buttonName}
           </Button>
@@ -265,11 +269,8 @@ export function SideSheetTransaction({
               onSubmit={handleSubmit(onSubmit)}
               className="col-span-2 grid grid-cols-3 gap-4 mt-5"
             >
-              {formGenSchema.fields.map((field:FieldSchema) => (
-                <div
-                  className="grid grid-rows-1 gap-2"
-                  key={field?.name}
-                >
+              {formGenSchema.fields.map((field: FieldSchema) => (
+                <div className="grid grid-rows-1 gap-2" key={field?.name}>
                   {field.type !== "checkbox" ? (
                     <Label
                       htmlFor={field?.name}
@@ -349,7 +350,7 @@ export function SideSheetTransaction({
                                 backgroundColor: "var(--color-primary)",
                               }}
                             >
-                              <RiAddLine style={{color: "white "}}/>
+                              <RiAddLine style={{ color: "white " }} />
                             </button>
                           </div>
                         );
