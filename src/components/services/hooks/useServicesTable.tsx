@@ -68,7 +68,7 @@ const useServicesTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Code
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -80,7 +80,7 @@ const useServicesTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Service Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -92,7 +92,7 @@ const useServicesTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Service Charge
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -104,7 +104,7 @@ const useServicesTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Tax Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -116,7 +116,7 @@ const useServicesTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Status
           <ArrowUpDown className="ml-2 h-4 w-4" />

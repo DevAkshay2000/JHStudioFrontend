@@ -58,7 +58,7 @@ const useServiceSessionsTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Code
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -71,7 +71,7 @@ const useServiceSessionsTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Transaction Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -84,7 +84,7 @@ const useServiceSessionsTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Customer
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -97,7 +97,7 @@ const useServiceSessionsTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Artist
           <ArrowUpDown className="ml-2 h-4 w-4" />

@@ -60,7 +60,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Code
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -72,7 +72,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Customer Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -84,7 +84,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Date Of Birth
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -96,7 +96,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Mobile Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -108,7 +108,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Email ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -130,7 +130,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Last Visited
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -142,7 +142,7 @@ const useCustomerHistoryTable = () => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
           Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
