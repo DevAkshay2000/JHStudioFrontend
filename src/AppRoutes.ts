@@ -6,6 +6,10 @@ const appRoutes = {
   SERVICES: "/services",
   SERVICESESSIONS: "/service-sessions",
   CUSTOMER_HISTORY: "/customer-history",
+  USERS: "/users",
+  ITEMS: "/items",
+  TAXES: "/taxes",
+  SUPPLIER: "/suppliers",
 };
 
 export default appRoutes;

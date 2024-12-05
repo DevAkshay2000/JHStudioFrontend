@@ -21,7 +21,7 @@ import { Switch } from "../../switch";
 import { useEffect, useState } from "react";
 import getData from "@/api/getData.api";
 import { TabTable } from "../TabTable";
-import { footerDataInterface } from "@/components/Service-Sessions/types";
+import { footerDataInterface } from "@/components/service-sessions/types";
 import Autocomplete from "../Combobox";
 import { RiAddLine } from "react-icons/ri";
 import { menuSchemaHandlerMap } from "@/mappings";
@@ -96,7 +96,7 @@ export function SideSheetTransaction({
   const [nquery, setNQuery] = useState(""); // Search input query
   const [modalKey, setModalKey] = useState("");
   const validationSchema = z.object(
-    formGenSchema.fields.reduce((acc, field) => {
+    formGenSchema?.fields?.reduce((acc, field) => {
       let validator: any;
 
       if (field.type === "checkbox") {
@@ -111,7 +111,7 @@ export function SideSheetTransaction({
         if (field?.required) {
           validator = validator?.min(1, field.error);
         }
-        field.validations.forEach((rule) => {
+        field?.validations?.forEach((rule) => {
           if (rule.min !== undefined) {
             validator = validator?.min(rule.min, rule.message);
           }
@@ -126,16 +126,14 @@ export function SideSheetTransaction({
     }, {} as Record<string, z.ZodType<any>>)
   );
   const {
-    // isRefresh,
-    // setIsRefresh,
     selectedRecordId,
-    // setSelectedRecordId,
     sheetOpen,
     setSheetOpen,
     resetFormData,
-    // setResetFormData,
     footerData,
     setFooterData,
+    setSelectedRecordId,
+    setResetFormData,
   } = useFetchDataContext();
   const {
     control,
@@ -224,7 +222,18 @@ export function SideSheetTransaction({
   };
   return (
     <div>
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+      <Sheet
+        open={sheetOpen}
+        // onOpenChange={setSheetOpen}
+        onOpenChange={() => {
+          setSheetOpen(!sheetOpen);
+          if (selectedRecordId) {
+            setSelectedRecordId(null);
+            setResetFormData(!resetFormData);
+            setNQuery("");
+          }
+        }}
+      >
         <SheetTrigger asChild>
           <Button
             variant="outline"

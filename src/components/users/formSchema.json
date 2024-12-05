@@ -1,6 +1,6 @@
 {
   "menuId": 16,
-  "postUrl": "/services",
+  "postUrl": "/users",
   "buttonName": "Service",
   "sheetTitle": "Add New Service",
   "sheetDescription": "",
@@ -43,7 +43,7 @@
       "label": "Tax Amount (Rs.)",
       "name": "taxAmount",
       "type": "number",
-      "required": false,
+      "required": true,
       "readOnly": true,
       "error": "Tax Amount field is required",
       "validations": []
