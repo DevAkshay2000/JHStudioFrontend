@@ -10,6 +10,7 @@ import Users from "@/components/users";
 import Item from "@/components/items";
 import Tax from "@/components/taxes";
 import Supplier from "@/components/suppliers";
+import SaleItems from "@/components/sale-items";
 
 function AppRouter() {
   return (
@@ -27,6 +28,7 @@ function AppRouter() {
       <Route path={Approutes.ITEMS} element={<Item />} />
       <Route path={Approutes.TAXES} element={<Tax />} />
       <Route path={Approutes.SUPPLIER} element={<Supplier />} />
+      <Route path={Approutes.SALE_ITEMS} element={<SaleItems />} />
     </Routes>
   );
 }

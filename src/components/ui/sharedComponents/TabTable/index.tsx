@@ -19,7 +19,9 @@ type TabTableInterface = {
   footerData: footerDataInterface;
   setFooterData: any;
   removeSelectedItems: Function;
+  isSaleItem?: boolean;
 };
+
 export function TabTable({
   items,
   handlFormFieldStateUpdate,
@@ -29,11 +31,13 @@ export function TabTable({
   footerData,
   setFooterData,
   removeSelectedItems,
+  isSaleItem,
 }: TabTableInterface): JSX.Element {
   //********* */
   //1. toggle selected / checked items item
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [searchText, setSearchText] = useState<string>("");
+
   const toggleSelectItem = (id: number | string) => {
     setSelectedItems((prevSelected: any) =>
       prevSelected.includes(id)
@@ -41,7 +45,6 @@ export function TabTable({
         : [...prevSelected, id]
     );
   };
-  //********* */
 
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -49,6 +52,7 @@ export function TabTable({
     setFooterData({
       ...footerData,
       // subtotal: Number(footerData.subtotal + prev.discountAmount - updateValue),
+      subtotal: Number(footerData.subtotal + prev.rate * prev.quantity),
       totalDiscount:
         updateValue <= prev.amount
           ? Number(footerData.totalDiscount - prev.discountAmount + updateValue)
@@ -98,10 +102,10 @@ export function TabTable({
           setOpen(false);
         }}
       >
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[600px]">
           <SearchBoxTable
             items={searchBoxData}
-            itemsPerPage={1}
+            itemsPerPage={5}
             onRowDoubleClick={selectNewItem}
             searchBoxSchema={searchBoxSchema}
             setSearchText={setSearchText}
@@ -121,17 +125,27 @@ export function TabTable({
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Item Name
               </th>
+              {isSaleItem ? (
+                <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
+                  Cost (₹)
+                </th>
+              ) : null}
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
-                Price (₹)
+                Rate (₹)
               </th>
+              {isSaleItem ? (
+                <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
+                  Quantity
+                </th>
+              ) : null}
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
-                Tax %
+                Tax (%)
               </th>
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Tax Amount
               </th>
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
-                Discount Amount
+                Discount (₹)
               </th>
               <th className="p-3 text-left text-sm font-medium text-gray-500 text-slate-950 font-serif">
                 Amount (₹)
@@ -146,6 +160,7 @@ export function TabTable({
                 handlFormFieldStateUpdate={handlFormFieldStateUpdate}
                 checked={selectedItems.includes(item?.id)}
                 updateGrandTotal={updateGrandTotal}
+                isSaleItem={isSaleItem || false}
               />
             ))}
           </tbody>
@@ -183,13 +198,30 @@ function Form({
   checked,
   toggleSelectItem,
   updateGrandTotal,
+  isSaleItem,
 }: {
   item: SaleTabInterface;
   checked: boolean;
   toggleSelectItem: Function;
   handlFormFieldStateUpdate: Function;
   updateGrandTotal: Function;
+  isSaleItem: boolean;
 }): JSX.Element {
+  const handleQuantityChange = (item: SaleTabInterface, quantity: number) => {
+    const _newData: SaleTabInterface = {
+      ...item,
+      quantity: Number(quantity),
+      amount: Number(
+        item.rate * quantity +
+          item.rate * quantity * (item.tax.percentage / 100)
+      ),
+      taxAmount: Number(item.rate * quantity * (item.tax.percentage / 100)),
+    };
+    setRowData(_newData);
+    updateGrandTotal(_newData, _newData.discountAmount);
+    handlFormFieldStateUpdate(_newData, item.id);
+  };
+
   const handleDiscountChange = (
     prev: SaleTabInterface,
     curr: number,
@@ -212,10 +244,13 @@ function Form({
     }
     handlFormFieldStateUpdate(_newData, id);
   };
+
   const [rowData, setRowData] = useState(item);
+
   useEffect(() => {
     setRowData(item);
   }, [item]);
+
   return (
     <>
       <tr key={item.id} className="hover:bg-gray-50">
@@ -229,6 +264,20 @@ function Form({
           />
         </td>
         <td className="p-2 text-sm">{rowData.service.name}</td>
+        {/* Purchase Price */}
+        {isSaleItem ? (
+          <td className="p-2">
+            <input
+              disabled={true}
+              type="number"
+              value={rowData.costPrice}
+              className="border rounded p-1 w-full text-sm text-center focus:ring-blue-500 focus:border-blue-500"
+            />
+          </td>
+        ) : (
+          ""
+        )}
+        {/* Sale Price (rate) */}
         <td className="p-2">
           <input
             disabled={true}
@@ -240,6 +289,21 @@ function Form({
             className="border rounded p-1 w-full text-sm text-center focus:ring-blue-500 focus:border-blue-500"
           />
         </td>
+        {/* Quantity */}
+        {isSaleItem ? (
+          <td className="p-2">
+            <input
+              type="number"
+              value={rowData.quantity}
+              onChange={(e) =>
+                handleQuantityChange(item, parseFloat(e.target.value))
+              }
+              className="border rounded p-1 w-full text-sm text-center focus:ring-blue-500 focus:border-blue-500"
+            />
+          </td>
+        ) : (
+          ""
+        )}
         <td className="p-2">
           <input
             disabled={true}

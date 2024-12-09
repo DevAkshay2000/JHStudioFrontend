@@ -1,8 +1,8 @@
 {
   "menuId": 16,
-  "postUrl": "/sale-headers",
-  "buttonName": "Add New Service Session",
-  "sheetTitle": "New Service Session",
+  "postUrl": "/sale-headers/bulk",
+  "buttonName": "Make Item Sale",
+  "sheetTitle": "Make Item Sale",
   "sheetDescription": "",
   "fields": [
     {
@@ -43,12 +43,12 @@
       "validations": []
     },
     {
-      "label": "Artist",
+      "label": "Sale Executive",
       "name": "user",
       "type": "select",
       "optionsAPI": "/users",
       "required": true,
-      "error": "Artist field is required",
+      "error": "Sale Executive is required",
       "validations": []
     },
     {

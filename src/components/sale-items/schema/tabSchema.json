@@ -1,0 +1,41 @@
+{
+    "table": [
+      {
+        "header": "Item Name",
+        "name":"",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Purchase Price (Rs.)",
+        "type": "number",
+        "validations": [],
+        "disabled": true
+      },
+      {
+        "header": "Sale Price (Rs.)",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Quantity",
+        "type": "number",
+        "disabled": false,
+        "validations": []
+      },
+      {
+        "header": "Tax Rate (%)",
+        "type": "number",
+        "validations": [],
+        "disabled": false
+      },
+      {
+        "header": "Amount (Rs.)",
+        "type": "readonly",
+        "disabled": false,
+        "validations": []
+      }
+    ]
+  }

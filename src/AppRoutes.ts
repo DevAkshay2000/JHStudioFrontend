@@ -10,6 +10,7 @@ const appRoutes = {
   ITEMS: "/items",
   TAXES: "/taxes",
   SUPPLIER: "/suppliers",
+  SALE_ITEMS: "/sale-items",
 };
 
 export default appRoutes;

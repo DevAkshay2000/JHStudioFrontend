@@ -68,10 +68,9 @@ interface SideSheetProps {
   footerData?: footerDataInterface;
   setFooterData?: any;
   removeSelectedItems: Function;
-  // onEditSubmit: any;
-
   editButtonLoader?: any;
   editModeData: any;
+  isSaleItem?: boolean;
 }
 
 export function SideSheetTransaction({
@@ -85,16 +84,15 @@ export function SideSheetTransaction({
   selectNewItem,
   selectedData,
   removeSelectedItems,
-  // onEditSubmit,
-  // editButtonLoader,
   editModeData,
+  isSaleItem,
 }: SideSheetProps): JSX.Element {
-  // Zod validation schema based on field validations
   const [schema, setSchema] = useState<any>({});
-  // const [handler, sethandler] = useState<Function>(() => {});
   const [modalOpen, setModalOpen] = useState<any>(false);
   const [nquery, setNQuery] = useState(""); // Search input query
   const [modalKey, setModalKey] = useState("");
+  
+  // Zod validation schema based on field validations
   const validationSchema = z.object(
     formGenSchema?.fields?.reduce((acc, field) => {
       let validator: any;
@@ -125,6 +123,7 @@ export function SideSheetTransaction({
       return acc;
     }, {} as Record<string, z.ZodType<any>>)
   );
+
   const {
     selectedRecordId,
     sheetOpen,
@@ -135,6 +134,7 @@ export function SideSheetTransaction({
     setSelectedRecordId,
     setResetFormData,
   } = useFetchDataContext();
+
   const {
     control,
     handleSubmit,
@@ -149,6 +149,7 @@ export function SideSheetTransaction({
   const [dropdownOptions, setDropdownOptions] = useState<Record<string, any[]>>(
     {}
   );
+
   useEffect(() => {
     // Function to fetch dropdown options from the API
     const fetchOptions = async (fieldName: string, apiUrl: string) => {
@@ -178,10 +179,12 @@ export function SideSheetTransaction({
       }
     });
   }, [formGenSchema.fields]);
+
   // Reset form entries after submission of data successfully
   useEffect(() => {
     reset();
   }, [reset, resetFormData]);
+
   //Setting up value in edit to each field
   useEffect(() => {
     const nameTypeMapping: any = {};
@@ -203,6 +206,7 @@ export function SideSheetTransaction({
       });
     }
   }, [selectedRecordId, editModeData, setValue, formGenSchema?.fields]);
+
   const modalFormSubmitHandler = async (values: any) => {
     const payload = PayloadModify(schema, values);
 
@@ -220,11 +224,11 @@ export function SideSheetTransaction({
       }
     }
   };
+
   return (
     <div>
       <Sheet
         open={sheetOpen}
-        // onOpenChange={setSheetOpen}
         onOpenChange={() => {
           setSheetOpen(!sheetOpen);
           if (selectedRecordId) {
@@ -243,7 +247,7 @@ export function SideSheetTransaction({
               color: "white",
             }}
           >
-            <FaPlus /> Add New {formGenSchema?.buttonName}
+            <FaPlus /> {formGenSchema?.buttonName}
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -395,6 +399,7 @@ export function SideSheetTransaction({
             footerData={footerData}
             setFooterData={setFooterData}
             removeSelectedItems={removeSelectedItems}
+            isSaleItem={isSaleItem}
           />
           <Dialog
             open={modalOpen}
@@ -402,7 +407,7 @@ export function SideSheetTransaction({
               setModalOpen(false);
             }}
           >
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[580px]">
               <ModalForm
                 formGenSchema={schema}
                 onSubmit={modalFormSubmitHandler}

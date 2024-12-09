@@ -14,6 +14,7 @@ export interface SaleTabInterface {
   }; // Reference to the Taxes entity
   quantity: number; // Quantity of items or services
   rate: number; // Rate per item or service
+  costPrice: number; // Cost price per item or service
   amount: number; // Total amount
   discountAmount: number; // Discount amount, if applicable
   taxAmount: number; // Tax amount, if applicable

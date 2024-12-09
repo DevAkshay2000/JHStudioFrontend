@@ -383,9 +383,11 @@ export function SideSheet({
                     }}
                   />
                   {errors[field.name] && (
-                    <p style={{ color: "orangered", fontSize: "13px" }}>
-                      {errors[field.name]?.message?.toString()}
-                    </p>
+                    <div>
+                      <p style={{ color: "orangered", fontSize: "13px" }}>
+                        {errors[field.name]?.message?.toString()}
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}
